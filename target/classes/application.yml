@@ -1,0 +1,9 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: hexagonal-arch-demo
+  datasource:
+    url: jdbc:mysql://localhost:3306/masterboard
+    username: testuser
+    password: MyPass123!
