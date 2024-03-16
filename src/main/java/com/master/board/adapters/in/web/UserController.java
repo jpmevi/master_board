@@ -1,20 +1,19 @@
 package com.master.board.adapters.in.web;
 
-import com.master.board.application.dto.NewUserDto;
+import com.master.board.application.dto.RegisterDto;
+import com.master.board.application.payload.ApiResponse;
+import com.master.board.application.payload.AuthResponse;
 import com.master.board.application.usecases.UserUseCase;
-import com.master.board.domain.User;
+import com.master.board.domain.models.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.stream.Collectors;
-
 @RestController
-@RequestMapping("/users")
+@RequestMapping("api/users/v1")
 @RequiredArgsConstructor
 public class UserController {
     private final UserUseCase userUseCase;
@@ -24,13 +23,13 @@ public class UserController {
         return ResponseEntity.ok(userUseCase.getAllUsers());
     }
 
-    @PostMapping
-    public ResponseEntity<?> saveUser(@RequestBody @Valid NewUserDto newUserDto){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userUseCase.saveUser(newUserDto));
+    @PutMapping("/admin/{userId}")
+    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody RegisterDto registerDto){
+        return ResponseEntity.status(HttpStatus.OK).body(userUseCase.updateUser(userId,registerDto));
     }
 
-    @PutMapping
-    public ResponseEntity<?> updateUser(@RequestBody User user){
-        return ResponseEntity.status(HttpStatus.CREATED).body(userUseCase.updateUser(user));
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<?> deleteUser(@PathVariable Long userId){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(userUseCase.deleteUser(userId));
     }
 }

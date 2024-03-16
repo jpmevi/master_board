@@ -3,9 +3,13 @@ package com.master.board.adapters.out.mysqlJDBC;
 import com.master.board.adapters.out.mysqlJDBC.entities.UserEntity;
 import com.master.board.adapters.out.mysqlJDBC.repositories.UserRepository;
 import com.master.board.application.dao.UserDAO;
-import com.master.board.application.dto.NewUserDto;
-import com.master.board.domain.User;
+import com.master.board.application.dto.RegisterDto;
+import com.master.board.application.payload.AuthResponse;
+import com.master.board.domain.models.User;
+import com.master.board.domain.models.enums.Role;
+import com.master.board.domain.services.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,8 +19,13 @@ import java.util.Optional;
 @Component
 public class UserDaoAdapter implements UserDAO {
     private final UserRepository userRepository;
+
     @Override
-    public Optional<User> findUserByEmail(String email) {
+    public Optional<UserEntity> find(Long id) {
+        return userRepository.findById(id);
+    }
+    @Override
+    public Optional<UserEntity> findUserByEmail(String email) {
         return userRepository.findUserByEmail(email);
     }
 
@@ -26,53 +35,56 @@ public class UserDaoAdapter implements UserDAO {
                 .stream()
                 .map(userEntity -> {
                     return new User(
-                            userEntity.id(),
-                            userEntity.firstName(),
-                            userEntity.lastName(),
-                            userEntity.email(),
-                            userEntity.password(),
-                            userEntity.address(),
-                            userEntity.phone(),
-                            userEntity.imgUrl(),
-                            userEntity.role()
+                            userEntity.getId(),
+                            userEntity.getFirstName(),
+                            userEntity.getLastName(),
+                            userEntity.getEmail(),
+                            userEntity.getPassword(),
+                            userEntity.getAddress(),
+                            userEntity.getPhone(),
+                            userEntity.getImgUrl(),
+                            userEntity.getRole(),
+                            userEntity.getAuthorities()
                     );
                 }).toList();
     }
 
     @Override
-    public void saveUser(NewUserDto user) {
-        userRepository.save(new UserEntity(
-                null,
-                user.first_name(),
-                user.last_name(),
-                user.email(),
-                user.password(),
-                user.address(),
-                user.phone(),
-                user.img_url(),
-                user.role(),
-                null
-        ));
+    public AuthResponse saveUser(RegisterDto request, PasswordEncoder passwordEncoder, JwtService jwtService) {
+        UserEntity user = UserEntity.builder()
+                .email(request.email())
+                .password(passwordEncoder.encode( request.password()))
+                .firstName(request.first_name())
+                .lastName(request.last_name())
+                .address(request.address())
+                .phone(request.phone())
+                .imgUrl(request.img_url())
+                .role(Role.values()[request.role()])
+                .build();
+        userRepository.save(user);
+
+        return AuthResponse.builder()
+                .token(jwtService.getToken(user))
+                .build();
     }
 
     @Override
-    public void updateUser(User newUser) {
-        userRepository.save(new UserEntity(
-                newUser.id(),
-                newUser.firstName(),
-                newUser.lastName(),
-                newUser.email(),
-                newUser.password(),
-                newUser.address(),
-                newUser.phone(),
-                newUser.imgUrl(),
-                newUser.role(),
-                null
-        ));
+    public void updateUser(UserEntity user, RegisterDto request) {
+
+        user.setFirstName(request.first_name());
+        user.setLastName(request.last_name());
+        user.setEmail(request.email());
+        user.setPassword(request.password());
+        user.setAddress(request.address());
+        user.setPhone(request.phone());
+        user.setImgUrl(request.img_url());
+        user.setRole(Role.values()[request.role()]);
+
+        userRepository.save(user);
     }
 
     @Override
-    public void deleteUser(User oldUser) {
-
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
     }
 }
