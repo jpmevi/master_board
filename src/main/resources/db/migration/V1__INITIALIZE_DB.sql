@@ -1,6 +1,3 @@
--- -----------------------------------------------------
--- Table user
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS masterboard.user (
                                                 id INT NOT NULL AUTO_INCREMENT,
                                                 first_name VARCHAR(45) NOT NULL,
@@ -9,7 +6,7 @@ CREATE TABLE IF NOT EXISTS masterboard.user (
     phone VARCHAR(45) NOT NULL,
     email VARCHAR(45) NOT NULL,
     img_url VARCHAR(255) NOT NULL,
-    role ENUM('administrator', 'worker') NOT NULL,
+    role ENUM('administrator', 'project_manager', 'developer') NOT NULL,
     password VARCHAR(255) NOT NULL,
     salary_per_hour FLOAT,
     version INT,
@@ -17,183 +14,127 @@ CREATE TABLE IF NOT EXISTS masterboard.user (
     UNIQUE INDEX email_UNIQUE (email)
     );
 
--- -----------------------------------------------------
--- Table board
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS masterboard.board (
-                                                 id INT NOT NULL AUTO_INCREMENT,
-                                                 user_id INT NOT NULL,
-                                                 name VARCHAR(45) NOT NULL,
-    background_url VARCHAR(255) NOT NULL,
-    id_public TINYINT NOT NULL,
+CREATE TABLE IF NOT EXISTS masterboard.project (
+                                                   id INT NOT NULL AUTO_INCREMENT,
+                                                   user_id INT NOT NULL,
+                                                   name VARCHAR(45) NOT NULL,
+    description TEXT,
+    background_url TEXT,
+    is_active VARCHAR(45) NOT NULL,
+    is_public TINYINT NOT NULL,
+    disabled_reason TEXT,
     created_at TIMESTAMP NOT NULL,
     PRIMARY KEY (id),
-    INDEX fk_board_user1_idx (user_id),
-    CONSTRAINT fk_board_user1
-    FOREIGN KEY (user_id)
-    REFERENCES masterboard.user (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    INDEX fk_BOARD_USER1_idx (user_id),
+    CONSTRAINT fk_BOARD_USER1 FOREIGN KEY (user_id) REFERENCES masterboard.user (id)
     );
 
--- -----------------------------------------------------
--- Table board_user
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS masterboard.board_user (
-                                                      user_id INT NOT NULL,
-                                                      board_id INT NOT NULL,
-                                                      PRIMARY KEY (user_id, board_id),
-    INDEX fk_board_user_user_idx (user_id),
-    INDEX fk_board_user_board1_idx (board_id),
-    CONSTRAINT fk_board_user_user
-    FOREIGN KEY (user_id)
-    REFERENCES masterboard.user (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT fk_board_user_board1
-    FOREIGN KEY (board_id)
-    REFERENCES masterboard.board (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+CREATE TABLE IF NOT EXISTS masterboard.project_user (
+                                                        user_id INT NOT NULL,
+                                                        project_id INT NOT NULL,
+                                                        created_at VARCHAR(45),
+    PRIMARY KEY (user_id, project_id),
+    INDEX fk_BOARD_USER_USER_idx (user_id),
+    INDEX fk_BOARD_USER_PROJECT1_idx (project_id),
+    CONSTRAINT fk_BOARD_USER_USER FOREIGN KEY (user_id) REFERENCES masterboard.user (id),
+    CONSTRAINT fk_BOARD_USER_PROJECT1 FOREIGN KEY (project_id) REFERENCES masterboard.project (id)
     );
 
--- -----------------------------------------------------
--- Table list
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS masterboard.list (
-                                                id INT NOT NULL AUTO_INCREMENT,
-                                                board_id INT NOT NULL,
-                                                name VARCHAR(45) NOT NULL,
-    position INT NOT NULL,
+CREATE TABLE IF NOT EXISTS masterboard.case_type (
+                                                     id INT NOT NULL AUTO_INCREMENT,
+                                                     name VARCHAR(45) NOT NULL,
+    description TEXT NOT NULL,
+    project_id INT NOT NULL,
+    created_at DATETIME,
+    updated_at DATETIME,
+    label_color VARCHAR(7),
     PRIMARY KEY (id),
-    INDEX fk_list_board1_idx (board_id),
-    CONSTRAINT fk_list_board1
-    FOREIGN KEY (board_id)
-    REFERENCES masterboard.board (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    INDEX fk_TYPE_CASE_PROJECT1_idx (project_id),
+    CONSTRAINT fk_TYPE_CASE_PROJECT1 FOREIGN KEY (project_id) REFERENCES masterboard.project (id)
     );
 
--- -----------------------------------------------------
--- Table card
--- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS masterboard.case_type_flow (
+                                                          id INT NOT NULL AUTO_INCREMENT,
+                                                          stage VARCHAR(45) NOT NULL,
+    `order` INT NOT NULL,
+    case_type_id INT NOT NULL,
+    PRIMARY KEY (id),
+    INDEX fk_CASE_TYPE_FLOW_CASE_TYPE1_idx (case_type_id),
+    CONSTRAINT fk_CASE_TYPE_FLOW_CASE_TYPE1 FOREIGN KEY (case_type_id) REFERENCES masterboard.case_type (id)
+    );
+
 CREATE TABLE IF NOT EXISTS masterboard.card (
                                                 id INT NOT NULL AUTO_INCREMENT,
-                                                list_id INT NOT NULL,
                                                 name VARCHAR(45) NOT NULL,
     description TEXT NOT NULL,
     due_date TIMESTAMP NOT NULL,
     reminder_date TIMESTAMP NOT NULL,
     is_active TINYINT NOT NULL,
+    state ENUM('pending', 'canceled', 'completed'),
+    canceled_reason TEXT,
+    case_type_id INT NOT NULL,
+    updated_at TIMESTAMP NOT NULL,
     created_at TIMESTAMP NOT NULL,
-    hours INT NOT NULL,
     PRIMARY KEY (id),
-    INDEX fk_card_list1_idx (list_id),
-    CONSTRAINT fk_card_list1
-    FOREIGN KEY (list_id)
-    REFERENCES masterboard.list (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    INDEX fk_CARD_CASE_TYPE1_idx (case_type_id),
+    CONSTRAINT fk_CARD_CASE_TYPE1 FOREIGN KEY (case_type_id) REFERENCES masterboard.case_type (id)
     );
 
--- -----------------------------------------------------
--- Table comment
--- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS masterboard.card_item (
+                                                     id INT NOT NULL AUTO_INCREMENT,
+                                                     hours VARCHAR(45) NOT NULL,
+    state ENUM('unassigned', 'assigned', 'in_progress', 'review', 'rejected', 'completed'),
+    case_type_flow_id INT NOT NULL,
+    card_id INT NOT NULL,
+    created_at TIMESTAMP,
+    updated_at TIMESTAMP,
+    PRIMARY KEY (id),
+    INDEX fk_CARD_ITEM_CASE_TYPE_FLOW1_idx (case_type_flow_id),
+    INDEX fk_CARD_ITEM_CARD1_idx (card_id),
+    CONSTRAINT fk_CARD_ITEM_CASE_TYPE_FLOW1 FOREIGN KEY (case_type_flow_id) REFERENCES masterboard.case_type_flow (id),
+    CONSTRAINT fk_CARD_ITEM_CARD1 FOREIGN KEY (card_id) REFERENCES masterboard.card (id)
+    );
+
 CREATE TABLE IF NOT EXISTS masterboard.comment (
                                                    id INT NOT NULL AUTO_INCREMENT,
-                                                   user_id INT NOT NULL,
-                                                   card_id INT NOT NULL,
                                                    comment TEXT NOT NULL,
+                                                   user_id INT NOT NULL,
+                                                   card_item_id INT NOT NULL,
                                                    created_at TIMESTAMP NOT NULL,
+                                                   updated_at TIMESTAMP,
                                                    PRIMARY KEY (id),
-    INDEX fk_comment_user1_idx (user_id),
-    INDEX fk_comment_card1_idx (card_id),
-    CONSTRAINT fk_comment_user1
-    FOREIGN KEY (user_id)
-    REFERENCES masterboard.user (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT fk_comment_card1
-    FOREIGN KEY (card_id)
-    REFERENCES masterboard.card (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    INDEX fk_COMMENT_USER1_idx (user_id),
+    INDEX fk_COMMENT_CARD_ITEM1_idx (card_item_id),
+    CONSTRAINT fk_COMMENT_USER1 FOREIGN KEY (user_id) REFERENCES masterboard.user (id),
+    CONSTRAINT fk_COMMENT_CARD_ITEM1 FOREIGN KEY (card_item_id) REFERENCES masterboard.card_item (id)
     );
 
--- -----------------------------------------------------
--- Table card_user
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS masterboard.card_user (
+                                                     id INT NOT NULL AUTO_INCREMENT,
                                                      user_id INT NOT NULL,
                                                      card_id INT NOT NULL,
-                                                     PRIMARY KEY (user_id, card_id),
-    INDEX fk_card_user_card1_idx (card_id),
-    CONSTRAINT fk_card_user_user1
-    FOREIGN KEY (user_id)
-    REFERENCES masterboard.user (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT fk_card_user_card1
-    FOREIGN KEY (card_id)
-    REFERENCES masterboard.card (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-    );
-
--- -----------------------------------------------------
--- Table checklist
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS masterboard.checklist (
-                                                     id INT NOT NULL AUTO_INCREMENT,
-                                                     card_id INT NOT NULL,
-                                                     name VARCHAR(45) NOT NULL,
+                                                     card_item_id INT,
+                                                     INDEX fk_CARD_USER_USER1_idx (user_id),
+    INDEX fk_CARD_USER_CARD1_idx (card_id),
+    INDEX fk_CARD_USER_CARD_ITEM1_idx (card_item_id),
     PRIMARY KEY (id),
-    INDEX fk_checklist_card1_idx (card_id),
-    CONSTRAINT fk_checklist_card1
-    FOREIGN KEY (card_id)
-    REFERENCES masterboard.card (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    CONSTRAINT fk_CARD_USER_USER1 FOREIGN KEY (user_id) REFERENCES masterboard.user (id),
+    CONSTRAINT fk_CARD_USER_CARD1 FOREIGN KEY (card_id) REFERENCES masterboard.card (id),
+    CONSTRAINT fk_CARD_USER_CARD_ITEM1 FOREIGN KEY (card_item_id) REFERENCES masterboard.card_item (id)
     );
 
--- -----------------------------------------------------
--- Table checklist_item
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS masterboard.checklist_item (
-                                                          id INT NOT NULL AUTO_INCREMENT,
-                                                          checklist_id INT NOT NULL,
-                                                          name VARCHAR(45) NOT NULL,
-    is_checked TINYINT NOT NULL,
-    position INT NOT NULL,
-    PRIMARY KEY (id),
-    INDEX fk_checklist_item_checklist1_idx (checklist_id),
-    CONSTRAINT fk_checklist_item_checklist1
-    FOREIGN KEY (checklist_id)
-    REFERENCES masterboard.checklist (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-    );
-
--- -----------------------------------------------------
--- Table card_activity
--- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS masterboard.card_activity (
                                                          id INT NOT NULL AUTO_INCREMENT,
                                                          card_id INT NOT NULL,
                                                          user_id INT NOT NULL,
+                                                         card_item_id INT,
                                                          activity TEXT NOT NULL,
                                                          created_at TIMESTAMP NOT NULL,
                                                          PRIMARY KEY (id),
-    INDEX fk_card_activity_card1_idx (card_id),
-    INDEX fk_card_activity_user1_idx (user_id),
-    CONSTRAINT fk_card_activity_card1
-    FOREIGN KEY (card_id)
-    REFERENCES masterboard.card (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-    CONSTRAINT fk_card_activity_user1
-    FOREIGN KEY (user_id)
-    REFERENCES masterboard.user (id)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
+    INDEX fk_CARD_ACTIVITY_CARD1_idx (card_id),
+    INDEX fk_CARD_ACTIVITY_USER1_idx (user_id),
+    INDEX fk_CARD_ACTIVITY_CARD_ITEM1_idx (card_item_id),
+    CONSTRAINT fk_CARD_ACTIVITY_CARD1 FOREIGN KEY (card_id) REFERENCES masterboard.card (id),
+    CONSTRAINT fk_CARD_ACTIVITY_USER1 FOREIGN KEY (user_id) REFERENCES masterboard.user (id),
+    CONSTRAINT fk_CARD_ACTIVITY_CARD_ITEM1 FOREIGN KEY (card_item_id) REFERENCES masterboard.card_item (id)
     );

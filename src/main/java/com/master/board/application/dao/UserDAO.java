@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface UserDAO {
 
     Optional<UserEntity> find(Long id);
-    Optional<UserEntity> findUserByEmail(String email);
+    Optional<User> findUserByEmail(String email);
     List<User> findAllUsers();
 
     AuthResponse saveUser(RegisterDto user,PasswordEncoder passwordEncoder, JwtService jwtService);
