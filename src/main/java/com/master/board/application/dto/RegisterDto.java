@@ -1,9 +1,7 @@
 package com.master.board.application.dto;
 
 import com.master.board.domain.models.enums.Role;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 
 public record RegisterDto(
         @NotNull
@@ -26,7 +24,8 @@ public record RegisterDto(
         @NotEmpty
         String img_url,
         @NotNull
-        @NotEmpty
+        @Min(1)
+        @Max(3)
         Integer role,
         @NotNull
         @NotEmpty

@@ -1,5 +1,6 @@
 package com.master.board.config;
 
+
 import com.master.board.domain.services.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,12 +29,7 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest ->
                         authRequest
-                                .requestMatchers("/auth/**").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/admin/**").hasAuthority("administrator")
-                                .requestMatchers(HttpMethod.POST, "/admin/**").hasAuthority("administrator")
-                                .requestMatchers(HttpMethod.PUT, "/admin/**").hasAuthority("administrator")
-                                .requestMatchers(HttpMethod.DELETE, "/admin/**").hasAuthority("administrator")
-                                .requestMatchers( "/**").hasAuthority("administrator")
+                                .requestMatchers("/auth/**","/swagger-ui/**", "/swagger-ui.html","/v3/api-docs/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManager->

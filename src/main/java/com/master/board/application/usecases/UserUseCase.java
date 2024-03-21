@@ -1,5 +1,6 @@
 package com.master.board.application.usecases;
 
+import com.master.board.adapters.out.mysqlJDBC.entities.UserEntity;
 import com.master.board.application.dao.UserDAO;
 import com.master.board.application.dto.RegisterDto;
 import com.master.board.application.payload.ApiResponse;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,16 @@ public class UserUseCase {
     private final UserDAO userDao;
     public List<User> getAllUsers(){
         return userDao.findAllUsers();
+    }
+
+    public ResponseEntity<?> getUserById(Long id){
+        try{
+            var user = userDao.find(id);
+            if(!user.isPresent()) throw new ResourceNotFoundException("user","id",id);
+            return new ResponseEntity<>( user,HttpStatus.OK);
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
     }
 
     public ResponseEntity<?> updateUser(Long id, RegisterDto updateUserDto) throws ResourceNotFoundException {

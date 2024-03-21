@@ -25,8 +25,22 @@ public class UserDaoAdapter implements UserDAO {
         return userRepository.findById(id);
     }
     @Override
-    public Optional<UserEntity> findUserByEmail(String email) {
-        return userRepository.findUserByEmail(email);
+    public Optional<User> findUserByEmail(String email) {
+        Optional<UserEntity> userEntityOptional = userRepository.findUserByEmail(email);
+        return userEntityOptional.map(userEntity ->
+                new User(
+                        userEntity.getId(),
+                        userEntity.getFirstName(),
+                        userEntity.getLastName(),
+                        userEntity.getEmail(),
+                        userEntity.getPassword(),
+                        userEntity.getAddress(),
+                        userEntity.getPhone(),
+                        userEntity.getImgUrl(),
+                        userEntity.getRole(),
+                        userEntity.getAuthorities()
+                )
+        );
     }
 
     @Override
