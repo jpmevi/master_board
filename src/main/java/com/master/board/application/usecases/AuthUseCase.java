@@ -1,6 +1,6 @@
 package com.master.board.application.usecases;
 
-import com.master.board.adapters.out.mysqlJDBC.repositories.UserRepository;
+import com.master.board.adapters.out.repositories.UserRepository;
 import com.master.board.application.dao.UserDAO;
 import com.master.board.application.dto.LoginDto;
 import com.master.board.application.dto.RegisterDto;
@@ -8,7 +8,6 @@ import com.master.board.application.payload.AuthResponse;
 import com.master.board.domain.services.JwtService;
 import com.master.board.infraestructure.exceptions.ResourceAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;

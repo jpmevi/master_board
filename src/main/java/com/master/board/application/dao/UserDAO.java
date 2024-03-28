@@ -1,6 +1,6 @@
 package com.master.board.application.dao;
 
-import com.master.board.adapters.out.mysqlJDBC.entities.UserEntity;
+import com.master.board.adapters.out.entities.UserEntity;
 import com.master.board.application.dto.RegisterDto;
 import com.master.board.application.payload.AuthResponse;
 import com.master.board.domain.models.User;

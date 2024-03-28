@@ -1,6 +1,6 @@
 package com.master.board.config;
 
-import com.master.board.adapters.out.mysqlJDBC.repositories.UserRepository;
+import com.master.board.adapters.out.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
