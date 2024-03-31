@@ -24,8 +24,8 @@ public class AuthUseCase {
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginDto request) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-        UserDetails user =userRepository.findUserByEmail(request.getEmail()).orElseThrow();
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));
+        UserDetails user =userRepository.findUserByEmail(request.email()).orElseThrow();
         String token=jwtService.getToken(user);
         return AuthResponse.builder()
                 .token(token)
