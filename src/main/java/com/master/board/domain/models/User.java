@@ -1,5 +1,7 @@
 package com.master.board.domain.models;
 
+import com.master.board.adapters.out.entities.ProjectEntity;
+import com.master.board.adapters.out.entities.UserEntity;
 import com.master.board.domain.models.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,7 +15,6 @@ public record User(
         String firstName,
         String lastName,
         String email,
-        String password,
         String address,
         String phone,
         String imgUrl,
@@ -21,6 +22,19 @@ public record User(
         Collection authorities
 
 ) {
+    public User(UserEntity userEntity) {
+        this(
+                userEntity.getId(),
+                userEntity.getFirstName(),
+                userEntity.getLastName(),
+                userEntity.getEmail(),
+                userEntity.getAddress(),
+                userEntity.getPhone(),
+                userEntity.getImgUrl(),
+                userEntity.getRole(),
+                userEntity.getAuthorities()
+        );
+    }
     @Override
     public Integer id() {
         return id;
@@ -39,11 +53,6 @@ public record User(
     @Override
     public String email() {
         return email;
-    }
-
-    @Override
-    public String password() {
-        return password;
     }
 
     @Override
