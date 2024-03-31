@@ -9,8 +9,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CaseTypeDAO {
-    Optional<CaseTypeEntity> find(Long id);
-    List<CaseTypeEntity> findAllCaseTypes();
+    Optional<CaseType> find(Long id);
+    Optional<CaseTypeEntity> findById(Long id);
+    List<CaseType> findAllCaseTypes();
     CaseTypeEntity saveCaseType(CaseTypeDto input,ProjectEntity project);
     void updateCaseType(CaseTypeEntity caseType, CaseTypeDto input,ProjectEntity project);
     void deleteCaseType(Long id);

@@ -2,6 +2,7 @@ package com.master.board.application.usecases;
 
 import com.master.board.adapters.out.entities.CaseTypeEntity;
 import com.master.board.application.dao.CaseTypeDAO;
+import com.master.board.application.dao.ProjectDAO;
 import com.master.board.application.dao.UserDAO;
 import com.master.board.application.dto.CaseTypeDto;
 import com.master.board.application.dto.RegisterDto;
@@ -18,20 +19,44 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class CaseTypeUseCase {
     private final CaseTypeDAO caseTypeDAO;
-    public List<CaseTypeEntity> getAllCaseTypes(){
+    public List<CaseType> getAllCaseTypes(){
         return caseTypeDAO.findAllCaseTypes();
     }
 
-    public ResponseEntity<?> getCaseTypeById(Long id){
+    public Optional<CaseType> getCaseTypeById(Long id){
         try{
             var caseType = caseTypeDAO.find(id);
             if(!caseType.isPresent()) throw new ResourceNotFoundException("caseType","id",id);
-            return new ResponseEntity<>( caseType,HttpStatus.OK);
+            return caseType;
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public Optional<CaseType> updateCaseType(Long id, CaseTypeDto caseTypeDto) throws ResourceNotFoundException {
+        try{
+            var existingCaseType = caseTypeDAO.findById(id);
+            if(!existingCaseType.isPresent()) throw new ResourceNotFoundException("caseType","id",id);
+            //caseTypeDAO.updateCaseType(existingCaseType.get(),caseTypeDto);
+            //return existingCaseType;
+            return null;
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public ResponseEntity<?> deleteCaseType(Long id) throws ResourceNotFoundException {
+        try{
+            var existingCaseType = caseTypeDAO.findById(id);
+            if(!existingCaseType.isPresent()) throw new ResourceNotFoundException("caseType","id",id);
+            caseTypeDAO.deleteCaseType(id);
+            return new ResponseEntity<>( HttpStatus.NO_CONTENT);
         }catch (Exception e){
             throw new BadRequestException(e.getMessage());
         }

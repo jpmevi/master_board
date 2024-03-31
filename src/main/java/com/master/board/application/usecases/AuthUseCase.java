@@ -21,7 +21,6 @@ public class AuthUseCase {
     private final UserDAO userDao;
     private final UserRepository userRepository;
     private final JwtService jwtService;
-    private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
 
     public AuthResponse login(LoginDto request) {
@@ -32,12 +31,6 @@ public class AuthUseCase {
                 .token(token)
                 .build();
 
-    }
-
-    public AuthResponse register(RegisterDto request) {
-        var isPresent = userDao.findUserByEmail(request.email()).isPresent();
-        if(isPresent) throw new ResourceAlreadyExistsException("user","email",request.email());
-        return userDao.saveUser(request,passwordEncoder,jwtService);
     }
 
 }

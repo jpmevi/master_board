@@ -2,24 +2,31 @@ package com.master.board.application.usecases;
 
 import com.master.board.application.dao.UserDAO;
 import com.master.board.application.dto.RegisterDto;
+import com.master.board.application.payload.AuthResponse;
 import com.master.board.domain.models.User;
+import com.master.board.domain.models.enums.Role;
 import com.master.board.infraestructure.exceptions.BadRequestException;
 import com.master.board.infraestructure.exceptions.ResourceAlreadyExistsException;
 import com.master.board.infraestructure.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserUseCase {
     private final UserDAO userDao;
-    public List<User> getAllUsers(){
-        return userDao.findAllUsers();
+    private final PasswordEncoder passwordEncoder;
+    public Page<User> getAllUsers(Pageable pageable){
+        return userDao.findAllUsers(pageable);
     }
 
     public ResponseEntity<?> getUserById(Long id){
@@ -30,6 +37,23 @@ public class UserUseCase {
         }catch (Exception e){
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    public List<User> getUserByRoleAndName(String roleName, String userName) throws ResourceNotFoundException{
+        try{
+            if (!Role.contains(roleName)) {
+                throw new ResourceNotFoundException("Role","name",roleName);
+            }
+            return userDao.getUserByRoleAndName(roleName,userName);
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public User saveUser(RegisterDto request) {
+        var isPresent = userDao.findUserByEmail(request.email()).isPresent();
+        if(isPresent) throw new ResourceAlreadyExistsException("user","email",request.email());
+        return userDao.saveUser(request,passwordEncoder);
     }
 
     public ResponseEntity<?> updateUser(Long id, RegisterDto updateUserDto) throws ResourceNotFoundException {

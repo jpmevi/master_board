@@ -27,10 +27,4 @@ public class AuthController {
     {
         return ResponseEntity.ok(authUseCase.login(request));
     }
-
-    @PostMapping(value = "register")
-    public ResponseEntity<AuthResponse> register(@RequestBody @Valid RegisterDto request)
-    {
-        return ResponseEntity.ok(authUseCase.register(request));
-    }
 }

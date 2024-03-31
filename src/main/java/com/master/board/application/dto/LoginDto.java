@@ -8,16 +8,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class LoginDto {
-    @NotNull
-    @NotEmpty
-    @Email
-    String email;
-    @NotNull
-    @NotEmpty
-    String password;
+public record LoginDto (
+        @NotNull
+        @NotEmpty
+        @Email
+        String email,
+        @NotNull
+        @NotEmpty
+        String password
+        )
+{
+
 }

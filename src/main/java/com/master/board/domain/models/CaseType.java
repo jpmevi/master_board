@@ -1,5 +1,6 @@
 package com.master.board.domain.models;
 
+import com.master.board.adapters.out.entities.CaseTypeEntity;
 import com.master.board.adapters.out.entities.ProjectEntity;
 
 import java.util.Date;
@@ -8,11 +9,23 @@ public record CaseType (
         Integer id,
         String name,
         String description,
-        ProjectEntity project,
+        Project project,
         String labelColor,
         Date createdAt,
         Date updatedAt
 ){
+        public CaseType(CaseTypeEntity caseTypeEntity) {
+                this(
+                        caseTypeEntity.getId(),
+                        caseTypeEntity.getName(),
+                        caseTypeEntity.getDescription(),
+                        new Project(caseTypeEntity.getProject()),
+                        caseTypeEntity.getLabelColor(),
+                        caseTypeEntity.getCreatedAt(),
+                        caseTypeEntity.getUpdatedAt()
+                );
+        }
+
         @Override
         public Integer id() {
                 return id;
@@ -29,7 +42,7 @@ public record CaseType (
         }
 
         @Override
-        public ProjectEntity project() {
+        public Project project() {
                 return project;
         }
 
@@ -47,4 +60,6 @@ public record CaseType (
         public Date updatedAt() {
                 return updatedAt;
         }
+
+
 }

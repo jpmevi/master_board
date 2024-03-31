@@ -9,6 +9,10 @@ import com.master.board.domain.models.User;
 import com.master.board.domain.models.enums.Role;
 import com.master.board.domain.services.JwtService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
@@ -33,7 +37,6 @@ public class UserDaoAdapter implements UserDAO {
                         userEntity.getFirstName(),
                         userEntity.getLastName(),
                         userEntity.getEmail(),
-                        userEntity.getPassword(),
                         userEntity.getAddress(),
                         userEntity.getPhone(),
                         userEntity.getImgUrl(),
@@ -44,8 +47,8 @@ public class UserDaoAdapter implements UserDAO {
     }
 
     @Override
-    public List<User> findAllUsers() {
-        return  ((List<UserEntity>) userRepository.findAll())
+    public List<User> getUserByRoleAndName(String roleName,String userName) {
+        return  ((List<UserEntity>) userRepository.getUserByRoleAndName(roleName,userName))
                 .stream()
                 .map(userEntity -> {
                     return new User(
@@ -53,7 +56,6 @@ public class UserDaoAdapter implements UserDAO {
                             userEntity.getFirstName(),
                             userEntity.getLastName(),
                             userEntity.getEmail(),
-                            userEntity.getPassword(),
                             userEntity.getAddress(),
                             userEntity.getPhone(),
                             userEntity.getImgUrl(),
@@ -61,10 +63,33 @@ public class UserDaoAdapter implements UserDAO {
                             userEntity.getAuthorities()
                     );
                 }).toList();
+
     }
 
     @Override
-    public AuthResponse saveUser(RegisterDto request, PasswordEncoder passwordEncoder, JwtService jwtService) {
+    public Page<User> findAllUsers(Pageable pageable) {
+        Page<UserEntity> userEntitiesPage = userRepository.findAll(pageable);
+
+        List<User> users = userEntitiesPage.getContent().stream()
+                .map(userEntity -> new User(
+                        userEntity.getId(),
+                        userEntity.getFirstName(),
+                        userEntity.getLastName(),
+                        userEntity.getEmail(),
+                        userEntity.getAddress(),
+                        userEntity.getPhone(),
+                        userEntity.getImgUrl(),
+                        userEntity.getRole(),
+                        userEntity.getAuthorities()
+                ))
+                .toList();
+
+        return new PageImpl<>(users, pageable, userEntitiesPage.getTotalElements());
+    }
+
+
+    @Override
+    public User saveUser(RegisterDto request, PasswordEncoder passwordEncoder) {
         UserEntity user = UserEntity.builder()
                 .email(request.email())
                 .password(passwordEncoder.encode( request.password()))
@@ -76,10 +101,7 @@ public class UserDaoAdapter implements UserDAO {
                 .role(Role.values()[request.role()])
                 .build();
         userRepository.save(user);
-
-        return AuthResponse.builder()
-                .token(jwtService.getToken(user))
-                .build();
+        return new User(user);
     }
 
     @Override

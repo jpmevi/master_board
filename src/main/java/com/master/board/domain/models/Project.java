@@ -1,5 +1,7 @@
 package com.master.board.domain.models;
 
+import com.master.board.adapters.out.entities.ProjectEntity;
+
 public record Project(
         Integer id,
         Long userId,
@@ -9,5 +11,15 @@ public record Project(
         Boolean isPublic,
         Boolean isActive
         ) {
-
+        public Project(ProjectEntity projectEntity) {
+                this(
+                        projectEntity.getId(),
+                        projectEntity.getUserId(),
+                        projectEntity.getName(),
+                        projectEntity.getDescription(),
+                        projectEntity.getBackground_url(),
+                        projectEntity.getIsPublic(),
+                        projectEntity.getIsActive()
+                );
+        }
 }
