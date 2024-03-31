@@ -1,8 +1,11 @@
 package com.master.board.domain.models;
+
+import com.master.board.adapters.out.entities.ProjectEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 public record Project(
         Integer id,
         Long userId,
@@ -12,6 +15,18 @@ public record Project(
         Boolean isPublic,
         Boolean isActive
         ) {
+
+        public Project(ProjectEntity projectEntity) {
+                this(
+                        projectEntity.getId(),
+                        projectEntity.getUserId(),
+                        projectEntity.getName(),
+                        projectEntity.getDescription(),
+                        projectEntity.getBackground_url(),
+                        projectEntity.getIsPublic(),
+                        projectEntity.getIsActive()
+                );
+        }
         @Override
         public Integer id() {
                 return id;
