@@ -6,25 +6,33 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 public record Project(
         Integer id,
-        Long userId,
+        User user,
         String name,
         String description,
         String background_url,
         Boolean isPublic,
-        Boolean isActive
+        Boolean isActive,
+        String disabled_reason,
+        Date createdAt,
+        Date updatedAt
         ) {
 
         public Project(ProjectEntity projectEntity) {
                 this(
                         projectEntity.getId(),
-                        projectEntity.getUserId(),
+                        new User(projectEntity.getUser()),
                         projectEntity.getName(),
                         projectEntity.getDescription(),
                         projectEntity.getBackground_url(),
                         projectEntity.getIsPublic(),
-                        projectEntity.getIsActive()
+                        projectEntity.getIsActive(),
+                        projectEntity.getDisabled_reason(),
+                        projectEntity.getCreatedAt(),
+                        projectEntity.getUpdatedAt()
                 );
         }
         @Override
@@ -33,8 +41,8 @@ public record Project(
         }
 
         @Override
-        public Long userId() {
-                return userId;
+        public User user() {
+                return user;
         }
 
         @Override
@@ -60,5 +68,21 @@ public record Project(
         @Override
         public Boolean isActive() {
                 return isActive;
+        }
+
+        @Override
+        public String disabled_reason()
+        {
+                return disabled_reason;
+        }
+
+        @Override
+        public Date createdAt() {
+                return createdAt;
+        }
+
+        @Override
+        public Date updatedAt() {
+                return updatedAt;
         }
 }
