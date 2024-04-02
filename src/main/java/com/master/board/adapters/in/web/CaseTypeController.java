@@ -3,6 +3,7 @@ package com.master.board.adapters.in.web;
 import com.master.board.application.dto.CaseTypeDto;
 import com.master.board.application.dto.RegisterDto;
 import com.master.board.application.payload.ApiResponse;
+import com.master.board.application.payload.PaginatedResponse;
 import com.master.board.application.usecases.CaseTypeUseCase;
 import com.master.board.application.usecases.UserUseCase;
 import com.master.board.domain.models.CaseType;
@@ -10,6 +11,9 @@ import com.master.board.domain.models.User;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Null;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,13 +30,24 @@ public class CaseTypeController {
     private final CaseTypeUseCase caseTypeUseCase;
 
     @GetMapping
-    public ApiResponse<List<CaseType>> getAllCaseTypes(){
-        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,caseTypeUseCase.getAllCaseTypes());
+    public PaginatedResponse<List<CaseType>> getAllCaseTypes(@PageableDefault(page = 0,size = 10) Pageable pageable){
+        Page<CaseType> caseTypePage = caseTypeUseCase.getAllCaseTypes(pageable);
+        return new PaginatedResponse<>(HttpStatus.OK.value(),"OK", HttpStatus.OK,caseTypePage.getContent(),caseTypePage.getPageable());
+    }
+
+    @GetMapping("caseTypeByProject/{projectId}")
+    public ApiResponse<List<CaseType>> getAllCaseTypesByProject(@PathVariable Long projectId){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,caseTypeUseCase.getAllCaseTypesByProject(projectId));
     }
 
     @GetMapping("/{caseTypeId}")
     public ApiResponse<CaseType> getCaseTypeById(@PathVariable Long caseTypeId){
         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,caseTypeUseCase.getCaseTypeById(caseTypeId));
+    }
+
+    @GetMapping("/caseTypeByName/{caseTypeName}")
+    public ApiResponse<List<CaseType>> getCaseTypeByName(@PathVariable String caseTypeName){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,caseTypeUseCase.getCaseTypeByName(caseTypeName));
     }
 
     @PutMapping("/{caseTypeId}")
