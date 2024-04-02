@@ -13,6 +13,8 @@ import com.master.board.infraestructure.exceptions.BadRequestException;
 import com.master.board.infraestructure.exceptions.ResourceAlreadyExistsException;
 import com.master.board.infraestructure.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -25,8 +27,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CaseTypeUseCase {
     private final CaseTypeDAO caseTypeDAO;
-    public List<CaseType> getAllCaseTypes(){
-        return caseTypeDAO.findAllCaseTypes();
+    public Page<CaseType> getAllCaseTypes(Pageable pageable){
+        return caseTypeDAO.findAllCaseTypes(pageable);
+    }
+
+    public List<CaseType> getAllCaseTypesByProject(Long projectId){
+        return caseTypeDAO.findAllCaseTypesByProject(projectId);
     }
 
     public Optional<CaseType> getCaseTypeById(Long id){
@@ -34,6 +40,14 @@ public class CaseTypeUseCase {
             var caseType = caseTypeDAO.find(id);
             if(!caseType.isPresent()) throw new ResourceNotFoundException("caseType","id",id);
             return caseType;
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public List<CaseType> getCaseTypeByName(String caseTypeName){
+        try{
+            return caseTypeDAO.findByName(caseTypeName);
         }catch (Exception e){
             throw new BadRequestException(e.getMessage());
         }

@@ -18,7 +18,6 @@ public interface UserDAO {
     Optional<User> findUserByEmail(String email);
     List<User> getUserByRoleAndName(String roleName, String userName);
     Page<User> findAllUsers(Pageable pageable);
-
     User saveUser(RegisterDto user,PasswordEncoder passwordEncoder);
     void updateUser(UserEntity user,RegisterDto input);
     void deleteUser(Long id);
