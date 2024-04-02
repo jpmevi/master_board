@@ -21,7 +21,7 @@ public class ProjectEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         Integer id;
-        @OneToMany
+        @OneToOne
         @JoinColumn(name = "user_id")
         UserEntity user;
         String name;

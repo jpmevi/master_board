@@ -11,6 +11,9 @@ import com.master.board.application.dto.RegisterDto;
 import com.master.board.domain.models.Project;
 import com.master.board.domain.models.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -47,14 +50,12 @@ public class ProjectDaoAdapter implements ProjectDAO {
     }
 
     @Override
-    public List<Project> findAllProjects() {
-        return ((List<ProjectEntity>) projectRepository.findAll())
-                .stream()
-                .map(projectEntity -> {
-                    User user = new User(projectEntity.getUser());
-                    return new Project(
+    public Page<Project> findAllProjects(Pageable pageable) {
+        Page<ProjectEntity> projectEntitiesPage = projectRepository.findAll(pageable);
+        List<Project> projects = projectEntitiesPage.getContent().stream()
+                .map(projectEntity -> new Project(
                             projectEntity.getId(),
-                            user,
+                            new User (projectEntity.getUser()),
                             projectEntity.getName(),
                             projectEntity.getDescription(),
                             projectEntity.getBackground_url(),
@@ -63,11 +64,11 @@ public class ProjectDaoAdapter implements ProjectDAO {
                             projectEntity.getDisabled_reason(),
                             projectEntity.getCreatedAt(),
                             projectEntity.getUpdatedAt()
-                    );
-                })
+                    ))
                 .toList();
-    }
 
+        return new PageImpl<>(projects, pageable, projectEntitiesPage.getTotalElements());
+    }
     public ProjectEntity saveProject(ProjectDTO request, UserEntity user) {
         ProjectEntity project = ProjectEntity.builder()
                 .user(user)
