@@ -10,6 +10,9 @@ import com.master.board.domain.models.CaseType;
 import com.master.board.domain.models.Project;
 import com.master.board.domain.models.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -42,9 +45,47 @@ public class CaseTypeDaoAdapter implements CaseTypeDAO {
         return caseTypeRepository.findById(id);
     }
 
+
     @Override
-    public List<CaseType> findAllCaseTypes() {
-        return  ((List<CaseTypeEntity>) caseTypeRepository.findAll())
+    public List<CaseType> findByName(String caseTypeName) {
+        return  ((List<CaseTypeEntity>) caseTypeRepository.findByName(caseTypeName))
+                .stream()
+                .map(caseTypeEntity -> {
+                    Project project = new Project(caseTypeEntity.getProject());
+                    return new CaseType(
+                            caseTypeEntity.getId(),
+                            caseTypeEntity.getName(),
+                            caseTypeEntity.getDescription(),
+                            project,
+                            caseTypeEntity.getLabelColor(),
+                            caseTypeEntity.getCreatedAt(),
+                            caseTypeEntity.getUpdatedAt()
+                    );
+                }).toList();
+    }
+    @Override
+    public Page<CaseType> findAllCaseTypes(Pageable pageable) {
+        Page<CaseTypeEntity> caseTypeEntitiesPage = caseTypeRepository.findAll(pageable);
+        List<CaseType> caseTypes = caseTypeEntitiesPage.getContent().stream()
+                .map(caseTypeEntity -> {
+                    Project project = new Project(caseTypeEntity.getProject());
+                    return new CaseType(
+                            caseTypeEntity.getId(),
+                            caseTypeEntity.getName(),
+                            caseTypeEntity.getDescription(),
+                            project,
+                            caseTypeEntity.getLabelColor(),
+                            caseTypeEntity.getCreatedAt(),
+                            caseTypeEntity.getUpdatedAt()
+                    );
+                })
+                .toList();
+        return new PageImpl<>(caseTypes, pageable, caseTypeEntitiesPage.getTotalElements());
+    }
+
+    @Override
+    public List<CaseType> findAllCaseTypesByProject(Long projectId) {
+        return  ((List<CaseTypeEntity>) caseTypeRepository.findAllByProject(projectId))
                 .stream()
                 .map(caseTypeEntity -> {
                     Project project = new Project(caseTypeEntity.getProject());
