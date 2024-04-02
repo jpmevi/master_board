@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS masterboard.user (
     password VARCHAR(255) NOT NULL,
     salary_per_hour FLOAT,
     version INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     UNIQUE INDEX email_UNIQUE (email)
     );
@@ -24,6 +26,7 @@ CREATE TABLE IF NOT EXISTS masterboard.project (
     is_public TINYINT NOT NULL,
     disabled_reason TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
     INDEX fk_BOARD_USER1_idx (user_id),
     CONSTRAINT fk_BOARD_USER1 FOREIGN KEY (user_id) REFERENCES masterboard.user (id)
