@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -53,6 +54,10 @@ public class UserController {
     @GetMapping("/{roleName}/{userName}")
     public ApiResponse<List<User>> getUserByRoleAndName(@PathVariable String roleName,@PathVariable String userName){
         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.getUserByRoleAndName(roleName,userName));
+    }
+    @GetMapping("/userInfo")
+    public ApiResponse<User> getUserInfo(Authentication authentication){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.getUserInfo(authentication));
     }
     @GetMapping("/{userId}")
     public ResponseEntity<?> getUserById(@PathVariable Long userId){
