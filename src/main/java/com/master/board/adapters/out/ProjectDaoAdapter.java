@@ -8,6 +8,7 @@ import com.master.board.application.dao.ProjectDAO;
 import com.master.board.application.dto.CaseTypeDto;
 import com.master.board.application.dto.ProjectDTO;
 import com.master.board.application.dto.RegisterDto;
+import com.master.board.domain.models.CaseType;
 import com.master.board.domain.models.Project;
 import com.master.board.domain.models.User;
 import lombok.RequiredArgsConstructor;
@@ -44,10 +45,31 @@ public class ProjectDaoAdapter implements ProjectDAO {
                 });
     }
 
+
+    @Override
+    public List<Project> findAllProjectsByProjectManager(Long userId) {
+        return  ((List<ProjectEntity>) projectRepository.findAllByProjectManager(userId))
+                .stream()
+                .map(projectEntity -> {
+                    return new Project(
+                            projectEntity.getId(),
+                            new User(projectEntity.getUser()),
+                            projectEntity.getName(),
+                            projectEntity.getDescription(),
+                            projectEntity.getBackground_url(),
+                            projectEntity.getIsPublic(),
+                            projectEntity.getIsActive(),
+                            projectEntity.getDisabled_reason(),
+                            projectEntity.getCreatedAt(),
+                            projectEntity.getUpdatedAt()
+                    );
+                }).toList();
+    }
     @Override
     public Optional<ProjectEntity> findById(Long id) {
         return projectRepository.findById(id);
     }
+
 
     @Override
     public Page<Project> findAllProjects(Pageable pageable) {
@@ -69,7 +91,7 @@ public class ProjectDaoAdapter implements ProjectDAO {
 
         return new PageImpl<>(projects, pageable, projectEntitiesPage.getTotalElements());
     }
-    public ProjectEntity saveProject(ProjectDTO request, UserEntity user) {
+    public Project saveProject(ProjectDTO request, UserEntity user) {
         ProjectEntity project = ProjectEntity.builder()
                 .user(user)
                 .name(request.name())
@@ -80,7 +102,7 @@ public class ProjectDaoAdapter implements ProjectDAO {
                 .disabled_reason(request.disabled_reason())
                 .build();
         projectRepository.save(project);
-        return project;
+        return new Project(project);
     }
 
     @Override

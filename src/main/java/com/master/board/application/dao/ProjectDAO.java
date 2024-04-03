@@ -19,7 +19,8 @@ public interface ProjectDAO {
 
     Optional<ProjectEntity> findById(Long id);
     Page<Project> findAllProjects(Pageable pageable);
-    public ProjectEntity saveProject(ProjectDTO request, UserEntity user);
+    List<Project> findAllProjectsByProjectManager (Long userId);
+    public Project saveProject(ProjectDTO request, UserEntity user);
     void updateProject(ProjectEntity project, ProjectDTO request, UserEntity user);
     void deleteProject(Long id);
 }
