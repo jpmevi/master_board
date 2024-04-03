@@ -34,12 +34,13 @@ public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
 
-    //@PreAuthorize("hasAuthority('administrator')")
+    @PreAuthorize("hasAuthority('administrator')")
     @GetMapping
     @Operation(
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
-                            responseCode = "200", description = "Respuesta exitosa"
+                            responseCode = "200", description = "Respuesta exitosa",
+                            content = @Content(mediaType = "application/json")
                     ),
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(
                             responseCode = "404", description = "Recurso no encontrado",
@@ -54,6 +55,27 @@ public class ProjectController {
     public PaginatedResponse<List<Project>> getAllProjects(@PageableDefault(page = 0,size = 10) Pageable pageable){
         Page<Project> projectPage = projectUseCase.getAllProjects(pageable);
         return new PaginatedResponse<>(HttpStatus.OK.value(),"OK", HttpStatus.OK,projectPage.getContent(),projectPage.getPageable());
+    }
+
+    @Operation(
+            responses = {
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "200", description = "Respuesta exitosa",
+                            content = @Content(mediaType = "application/json")
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "404", description = "Recurso no encontrado",
+                            content = @Content(mediaType = "application/json")
+                    ),
+                    @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                            responseCode = "500", description = "Internal Error",
+                            content = @Content(mediaType = "application/json")
+                    )
+            }
+    )
+    @GetMapping("project-manager/{userId}")
+    public ApiResponse<List<Project>> getAllCaseTypesByProject(@PathVariable Long userId){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,projectUseCase.getAllProjectsByProjectManager(userId));
     }
 
 }
