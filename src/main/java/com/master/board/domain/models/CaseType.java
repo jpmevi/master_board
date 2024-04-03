@@ -9,7 +9,6 @@ public record CaseType (
         Integer id,
         String name,
         String description,
-        Project project,
         String labelColor,
         Date createdAt,
         Date updatedAt
@@ -19,7 +18,6 @@ public record CaseType (
                         caseTypeEntity.getId(),
                         caseTypeEntity.getName(),
                         caseTypeEntity.getDescription(),
-                        new Project(caseTypeEntity.getProject()),
                         caseTypeEntity.getLabelColor(),
                         caseTypeEntity.getCreatedAt(),
                         caseTypeEntity.getUpdatedAt()
@@ -39,11 +37,6 @@ public record CaseType (
         @Override
         public String description() {
                 return description;
-        }
-
-        @Override
-        public Project project() {
-                return project;
         }
 
         @Override
