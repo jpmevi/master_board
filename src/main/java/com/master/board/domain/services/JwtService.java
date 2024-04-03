@@ -1,10 +1,13 @@
 package com.master.board.domain.services;
 import java.security.Key;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -23,12 +26,19 @@ public class JwtService {
     }
 
     private String getToken(Map<String,Object> extraClaims, UserDetails user) {
-        return Jwts
-                .builder()
-                .setClaims(extraClaims)
+        String role = user.getAuthorities().stream()
+                .findFirst()
+                .map(GrantedAuthority::getAuthority)
+                .orElse("ROLE_DEFAULT");
+
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("role", role);
+
+        return Jwts.builder()
+                .setClaims(claims)
                 .setSubject(user.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 24)) // 1 day
                 .signWith(getKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

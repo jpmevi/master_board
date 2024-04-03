@@ -5,14 +5,18 @@ import com.master.board.application.dto.RegisterDto;
 import com.master.board.application.payload.AuthResponse;
 import com.master.board.domain.models.User;
 import com.master.board.domain.models.enums.Role;
+import com.master.board.domain.services.JwtAuthenticationFilter;
+import com.master.board.domain.services.JwtService;
 import com.master.board.infraestructure.exceptions.BadRequestException;
 import com.master.board.infraestructure.exceptions.ResourceAlreadyExistsException;
 import com.master.board.infraestructure.exceptions.ResourceNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +38,15 @@ public class UserUseCase {
             var user = userDao.find(id);
             if(!user.isPresent()) throw new ResourceNotFoundException("user","id",id);
             return new ResponseEntity<>( user,HttpStatus.OK);
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public Optional<User> getUserInfo(Authentication authentication){
+        try{
+            var user = userDao.findUserByEmail(authentication.getName());
+            return user;
         }catch (Exception e){
             throw new BadRequestException(e.getMessage());
         }
