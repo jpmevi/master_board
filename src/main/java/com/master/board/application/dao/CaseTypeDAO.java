@@ -16,7 +16,7 @@ public interface CaseTypeDAO {
     List<CaseType> findByName(String caseTypeName);
     Page<CaseType> findAllCaseTypes(Pageable pageable);
     List<CaseType> findAllCaseTypesByProject(Long projectId);
-    CaseTypeEntity saveCaseType(CaseTypeDto input,ProjectEntity project);
-    void updateCaseType(CaseTypeEntity caseType, CaseTypeDto input,ProjectEntity project);
+    CaseTypeEntity saveCaseType(CaseTypeDto input);
+    void updateCaseType(CaseTypeEntity caseType, CaseTypeDto input);
     void deleteCaseType(Long id);
 }

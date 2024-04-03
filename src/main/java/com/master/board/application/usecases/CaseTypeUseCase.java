@@ -5,9 +5,11 @@ import com.master.board.application.dao.CaseTypeDAO;
 import com.master.board.application.dao.ProjectDAO;
 import com.master.board.application.dao.UserDAO;
 import com.master.board.application.dto.CaseTypeDto;
+import com.master.board.application.dto.CaseTypeFlowDto;
 import com.master.board.application.dto.RegisterDto;
 import com.master.board.application.payload.AuthResponse;
 import com.master.board.domain.models.CaseType;
+import com.master.board.domain.models.CaseTypeFlow;
 import com.master.board.domain.models.User;
 import com.master.board.infraestructure.exceptions.BadRequestException;
 import com.master.board.infraestructure.exceptions.ResourceAlreadyExistsException;
@@ -53,13 +55,16 @@ public class CaseTypeUseCase {
         }
     }
 
-    public Optional<CaseType> updateCaseType(Long id, CaseTypeDto caseTypeDto) throws ResourceNotFoundException {
+    public CaseType saveCaseType(CaseTypeDto request) {
+        return new CaseType(caseTypeDAO.saveCaseType(request));
+    }
+
+    public CaseType updateCaseType(Long id, CaseTypeDto caseTypeDto) throws ResourceNotFoundException {
         try{
             var existingCaseType = caseTypeDAO.findById(id);
             if(!existingCaseType.isPresent()) throw new ResourceNotFoundException("caseType","id",id);
-            //caseTypeDAO.updateCaseType(existingCaseType.get(),caseTypeDto);
-            //return existingCaseType;
-            return null;
+            caseTypeDAO.updateCaseType(existingCaseType.get(),caseTypeDto);
+            return new CaseType(existingCaseType.get());
         }catch (Exception e){
             throw new BadRequestException(e.getMessage());
         }

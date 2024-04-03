@@ -27,12 +27,10 @@ public class CaseTypeDaoAdapter implements CaseTypeDAO {
     public Optional<CaseType> find(Long id) {
         return caseTypeRepository.findById(id)
                 .map(caseTypeEntity -> {
-                    Project project = new Project(caseTypeEntity.getProject());
                     return new CaseType(
                             caseTypeEntity.getId(),
                             caseTypeEntity.getName(),
                             caseTypeEntity.getDescription(),
-                            project,
                             caseTypeEntity.getLabelColor(),
                             caseTypeEntity.getCreatedAt(),
                             caseTypeEntity.getUpdatedAt()
@@ -51,12 +49,10 @@ public class CaseTypeDaoAdapter implements CaseTypeDAO {
         return  ((List<CaseTypeEntity>) caseTypeRepository.findByName(caseTypeName))
                 .stream()
                 .map(caseTypeEntity -> {
-                    Project project = new Project(caseTypeEntity.getProject());
                     return new CaseType(
                             caseTypeEntity.getId(),
                             caseTypeEntity.getName(),
                             caseTypeEntity.getDescription(),
-                            project,
                             caseTypeEntity.getLabelColor(),
                             caseTypeEntity.getCreatedAt(),
                             caseTypeEntity.getUpdatedAt()
@@ -68,12 +64,10 @@ public class CaseTypeDaoAdapter implements CaseTypeDAO {
         Page<CaseTypeEntity> caseTypeEntitiesPage = caseTypeRepository.findAll(pageable);
         List<CaseType> caseTypes = caseTypeEntitiesPage.getContent().stream()
                 .map(caseTypeEntity -> {
-                    Project project = new Project(caseTypeEntity.getProject());
                     return new CaseType(
                             caseTypeEntity.getId(),
                             caseTypeEntity.getName(),
                             caseTypeEntity.getDescription(),
-                            project,
                             caseTypeEntity.getLabelColor(),
                             caseTypeEntity.getCreatedAt(),
                             caseTypeEntity.getUpdatedAt()
@@ -88,12 +82,10 @@ public class CaseTypeDaoAdapter implements CaseTypeDAO {
         return  ((List<CaseTypeEntity>) caseTypeRepository.findAllByProject(projectId))
                 .stream()
                 .map(caseTypeEntity -> {
-                    Project project = new Project(caseTypeEntity.getProject());
                     return new CaseType(
                             caseTypeEntity.getId(),
                             caseTypeEntity.getName(),
                             caseTypeEntity.getDescription(),
-                            project,
                             caseTypeEntity.getLabelColor(),
                             caseTypeEntity.getCreatedAt(),
                             caseTypeEntity.getUpdatedAt()
@@ -102,11 +94,10 @@ public class CaseTypeDaoAdapter implements CaseTypeDAO {
     }
 
     @Override
-    public CaseTypeEntity saveCaseType(CaseTypeDto request, ProjectEntity project) {
+    public CaseTypeEntity saveCaseType(CaseTypeDto request) {
         CaseTypeEntity caseType = CaseTypeEntity.builder()
                 .name(request.name())
                 .description(request.description())
-                .project(project)
                 .labelColor(request.labelColor())
                 .build();
         caseTypeRepository.save(caseType);
@@ -115,11 +106,10 @@ public class CaseTypeDaoAdapter implements CaseTypeDAO {
     }
 
     @Override
-    public void updateCaseType(CaseTypeEntity caseType, CaseTypeDto input, ProjectEntity project) {
+    public void updateCaseType(CaseTypeEntity caseType, CaseTypeDto input) {
 
         caseType.setName(input.name());
         caseType.setDescription(input.description());
-        caseType.setProject(project);
         caseType.setLabelColor(input.labelColor());
         caseTypeRepository.save(caseType);
     }

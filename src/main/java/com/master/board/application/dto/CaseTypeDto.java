@@ -11,9 +11,6 @@ public record CaseTypeDto(
         String description,
         @NotNull
         @NotEmpty
-        String labelColor,
-        @NotNull
-        @Min(1)
-        Integer projectId
+        String labelColor
 ) {
 }

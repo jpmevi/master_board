@@ -1,5 +1,7 @@
 package com.master.board.adapters.out.entities;
 
+import com.master.board.domain.models.enums.CardItemState;
+import com.master.board.domain.models.enums.CardState;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,34 +9,32 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.relational.core.mapping.Column;
 
 import java.util.Date;
-import java.util.List;
 
 @Data
-@Entity(name = "project")
+@Entity(name = "card_item")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProjectEntity {
+public class CardItemEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        Integer id;
-        @OneToOne
-        @JoinColumn(name = "user_id")
-        UserEntity user;
-        String name;
-        String description;
-        String background_url;
-        Boolean isPublic;
-        Boolean isActive;
-        String disabled_reason;
-        //timestamps
-        @org.springframework.data.relational.core.mapping.Column("created_at")
+        private Integer id;
+        @Column
+        String hours;
+        @Enumerated(EnumType.STRING)
+        CardItemState state;
+        @ManyToOne
+        @JoinColumn(name = "case_type_flow_id")
+        CaseTypeFlowEntity caseTypeFlow;
+        @ManyToOne
+        @JoinColumn(name = "card_id")
+        CardEntity card;
+        @Column(name = "created_at")
         @CreatedDate
         private Date createdAt;
-        @Column("updated_at")
+        @Column(name = "updated_at")
         @LastModifiedDate
         private Date updatedAt;
 
