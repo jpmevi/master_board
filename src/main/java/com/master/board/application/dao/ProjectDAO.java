@@ -20,7 +20,7 @@ public interface ProjectDAO {
     Optional<ProjectEntity> findById(Long id);
     Page<Project> findAllProjects(Pageable pageable);
     List<Project> findAllProjectsByProjectManager (Long userId);
-    public ProjectEntity saveProject(ProjectDTO request, UserEntity user);
+    public Project saveProject(ProjectDTO request, UserEntity user);
     void updateProject(ProjectEntity project, ProjectDTO request, UserEntity user);
     void deleteProject(Long id);
 }

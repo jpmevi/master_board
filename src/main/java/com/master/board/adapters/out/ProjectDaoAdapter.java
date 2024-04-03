@@ -91,7 +91,7 @@ public class ProjectDaoAdapter implements ProjectDAO {
 
         return new PageImpl<>(projects, pageable, projectEntitiesPage.getTotalElements());
     }
-    public ProjectEntity saveProject(ProjectDTO request, UserEntity user) {
+    public Project saveProject(ProjectDTO request, UserEntity user) {
         ProjectEntity project = ProjectEntity.builder()
                 .user(user)
                 .name(request.name())
@@ -102,7 +102,7 @@ public class ProjectDaoAdapter implements ProjectDAO {
                 .disabled_reason(request.disabled_reason())
                 .build();
         projectRepository.save(project);
-        return project;
+        return new Project(project);
     }
 
     @Override

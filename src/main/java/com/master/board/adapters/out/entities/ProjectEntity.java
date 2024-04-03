@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.relational.core.mapping.Column;
 
 import java.util.Date;
 import java.util.List;
@@ -31,10 +30,10 @@ public class ProjectEntity {
         Boolean isActive;
         String disabled_reason;
         //timestamps
-        @org.springframework.data.relational.core.mapping.Column("created_at")
+        @Column(name = "created_at")
         @CreatedDate
         private Date createdAt;
-        @Column("updated_at")
+        @Column(name = "updated_at")
         @LastModifiedDate
         private Date updatedAt;
 
