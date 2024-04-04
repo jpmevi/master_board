@@ -28,6 +28,7 @@ import java.util.List;
 @RequestMapping("api/v1/caseType")
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@CrossOrigin("http://localhost:4200")
 public class CaseTypeController {
     private final CaseTypeUseCase caseTypeUseCase;
 

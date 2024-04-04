@@ -24,6 +24,7 @@ import java.util.List;
 @RequestMapping("api/v1/card")
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@CrossOrigin("http://localhost:4200")
 public class CardController {
     private final CardUseCase cardUseCase;
 
