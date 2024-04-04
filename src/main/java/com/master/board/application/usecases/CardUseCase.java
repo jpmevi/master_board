@@ -2,6 +2,7 @@ package com.master.board.application.usecases;
 
 import com.master.board.application.dao.CaseTypeDAO;
 import com.master.board.application.dao.CardDAO;
+import com.master.board.application.dao.ProjectDAO;
 import com.master.board.application.dto.CardDto;
 import com.master.board.domain.models.Card;
 import com.master.board.infraestructure.exceptions.BadRequestException;
@@ -11,7 +12,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -19,6 +22,7 @@ import java.util.Optional;
 public class CardUseCase {
     private final CardDAO cardDAO;
     private final CaseTypeDAO caseTypeDAO;
+    private final ProjectDAO projectDAO;
     public Page<Card> getAllCards(Pageable pageable){
         return cardDAO.findAllCards(pageable);
     }
@@ -36,7 +40,9 @@ public class CardUseCase {
     public Card saveCard(CardDto request) {
         var existingCaseType = caseTypeDAO.findById(request.caseTypeId());
         if(!existingCaseType.isPresent()) throw new ResourceNotFoundException("caseType","id",request.caseTypeId());
-        return cardDAO.saveCard(request,existingCaseType.get());
+        var existingProject = projectDAO.findById(request.projectId());
+        if(!existingProject.isPresent()) throw new ResourceNotFoundException("project","id",request.projectId());
+        return cardDAO.saveCard(request,existingCaseType.get(),existingProject.get());
     }
     public Card updateCard(Long id, CardDto cardDto) throws ResourceNotFoundException {
         try{
@@ -60,5 +66,13 @@ public class CardUseCase {
         }catch (Exception e){
             throw new BadRequestException(e.getMessage());
         }
+    }
+
+    public List<Map<String, Object>> getNumberOfCardsReport(){
+        return cardDAO.numberOfCardsReport();
+    }
+
+    public List<Map<String, Object>> hoursAndMoneyByDateRange(String startDate, String endDate){
+        return cardDAO.hoursAndMoneyByDateRange(startDate,endDate);
     }
 }

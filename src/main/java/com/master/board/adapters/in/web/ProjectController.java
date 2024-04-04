@@ -100,6 +100,22 @@ public class ProjectController {
     public ApiResponse<List<Project>> getAllCaseTypesByProject(@PathVariable Long userId){
         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,projectUseCase.getAllProjectsByProjectManager(userId));
     }
+    @PreAuthorize("hasAuthority('administrator')")
+    @GetMapping("hoursAndMoneySpecificProject/{proyectId}")
+    public ApiResponse<List<Project>> hoursAndMoneySpecificProject(@PathVariable Long proyectId){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,projectUseCase.hoursAndMoneySpecificProject(proyectId));
+    }
+    @PreAuthorize("hasAuthority('administrator')")
+    @GetMapping("hoursAndMoneyPerProject")
+    public ApiResponse<List<Project>> hoursAndMoneyPerProject(){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,projectUseCase.hoursAndMoneyPerProject());
+    }
+
+    @PreAuthorize("hasAuthority('administrator')")
+    @GetMapping("projectWithMoreCanceledCases")
+    public ApiResponse<List<Project>> projectWithMoreCanceledCases(){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,projectUseCase.projectWithMoreCanceledCases());
+    }
 
     @PreAuthorize("hasAuthority('administrator')")
     @Operation(

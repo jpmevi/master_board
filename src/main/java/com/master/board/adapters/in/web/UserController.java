@@ -21,6 +21,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1/users")
@@ -54,6 +55,27 @@ public class UserController {
     @GetMapping("/role/{roleName}")
     public ApiResponse<List<User>> getUsersByRole(@PathVariable String roleName){
         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.getUsersByRole(roleName));
+    }
+
+    @GetMapping("/mostPaidDeveloper")
+    public ApiResponse<List<Map<String, Object>>> getMostPaidDeveloper(){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.mostPaidDeveloper());
+    }
+
+    @GetMapping("/developerWithMoreCases")
+    public ApiResponse<List<Map<String, Object>>> developerWithMostAssignedCards(){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.developerWithMostAssignedCards());
+    }
+
+
+    @GetMapping("/developersReport")
+    public ApiResponse<List<Object[]>> developersReport(){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.developersReport());
+    }
+
+    @GetMapping("/hoursAndMoneyByDeveloper/{userId}")
+    public ApiResponse<List<Object[]>> hoursAndMoneyByDeveloper(@PathVariable Long userId){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.hoursAndMoneyByDeveloper(userId));
     }
     @GetMapping("/{roleName}/{userName}")
     public ApiResponse<List<User>> getUserByRoleAndName(@PathVariable String roleName,@PathVariable String userName){

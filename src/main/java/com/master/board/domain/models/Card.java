@@ -23,6 +23,7 @@ Date reminderDate,
 Boolean isActive,
 CardState state,
         CaseType caseType,
+        Project project,
         Date createdAt,
         Date updatedAt
 ){
@@ -36,6 +37,7 @@ CardState state,
                         cardEntity.getIsActive(),
                         cardEntity.getState(),
                         new CaseType(cardEntity.getCaseType()),
+                        new Project(cardEntity.getProject()),
                         cardEntity.getCreatedAt(),
                         cardEntity.getUpdatedAt()
                 );

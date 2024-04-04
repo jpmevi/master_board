@@ -9,8 +9,10 @@ import com.master.board.application.dto.RegisterDto;
 import com.master.board.domain.models.Project;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface ProjectDAO {
@@ -23,4 +25,8 @@ public interface ProjectDAO {
     public Project saveProject(ProjectDTO request, UserEntity user);
     void updateProject(ProjectEntity project, ProjectDTO request, UserEntity user);
     void deleteProject(Long id);
+
+    List<Map<String, Object>> hoursAndMoneySpecificProject(Long projectId);
+    List<Map<String, Object>> hoursAndMoneyPerProject();
+    List<Map<String, Object>> projectWithMoreCanceledCases();
 }

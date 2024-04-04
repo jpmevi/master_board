@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -74,4 +75,20 @@ public class ProjectUseCase {
             throw new BadRequestException(e.getMessage());
         }
     }
+
+    public List<Map<String, Object>> hoursAndMoneySpecificProject(Long projectId)
+    {
+        return projectDAO.hoursAndMoneySpecificProject(projectId);
+    }
+
+    public List<Map<String, Object>> hoursAndMoneyPerProject()
+    {
+        return projectDAO.hoursAndMoneyPerProject();
+    }
+
+    public List<Map<String, Object>> projectWithMoreCanceledCases()
+    {
+        return projectDAO.projectWithMoreCanceledCases();
+    }
+
 }

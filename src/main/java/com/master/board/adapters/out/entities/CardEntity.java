@@ -39,6 +39,9 @@ public class CardEntity {
         @ManyToOne
         @JoinColumn(name = "case_type_id")
         CaseTypeEntity caseType;
+        @ManyToOne
+        @JoinColumn(name = "project_id")
+        ProjectEntity project;
         @Column(name = "created_at")
         @CreatedDate
         private Date createdAt;

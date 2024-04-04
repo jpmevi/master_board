@@ -2,12 +2,14 @@ package com.master.board.adapters.out;
 
 import com.master.board.adapters.out.entities.CardEntity;
 import com.master.board.adapters.out.entities.CaseTypeEntity;
+import com.master.board.adapters.out.entities.ProjectEntity;
 import com.master.board.adapters.out.entities.UserEntity;
 import com.master.board.adapters.out.repositories.CardRepository;
 import com.master.board.application.dao.CardDAO;
 import com.master.board.application.dto.CardDto;
 import com.master.board.domain.models.Card;
 import com.master.board.domain.models.CaseType;
+import com.master.board.domain.models.Project;
 import com.master.board.domain.models.User;
 import com.master.board.domain.models.enums.CardState;
 import com.master.board.domain.models.enums.Role;
@@ -17,8 +19,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
@@ -38,6 +40,7 @@ public class CardDaoAdapter implements CardDAO {
                             cardEntity.getIsActive(),
                             cardEntity.getState(),
                             new CaseType(cardEntity.getCaseType()),
+                            new Project(cardEntity.getProject()),
                             cardEntity.getCreatedAt(),
                             cardEntity.getUpdatedAt()
                     );
@@ -65,6 +68,7 @@ public class CardDaoAdapter implements CardDAO {
                             cardEntity.getIsActive(),
                             cardEntity.getState(),
                             new CaseType(cardEntity.getCaseType()),
+                            new Project(cardEntity.getProject()),
                             cardEntity.getCreatedAt(),
                             cardEntity.getUpdatedAt()
                     );
@@ -87,13 +91,14 @@ public class CardDaoAdapter implements CardDAO {
                             cardEntity.getIsActive(),
                             cardEntity.getState(),
                             new CaseType(cardEntity.getCaseType()),
+                            new Project(cardEntity.getProject()),
                             cardEntity.getCreatedAt(),
                             cardEntity.getUpdatedAt()
                     );
                 }).toList();
     }
     @Override
-    public Card saveCard(CardDto request, CaseTypeEntity caseType) {
+    public Card saveCard(CardDto request, CaseTypeEntity caseType, ProjectEntity projectEntity) {
         CardEntity card = CardEntity.builder()
                 .name(request.name())
                 .description(request.description())
@@ -102,6 +107,7 @@ public class CardDaoAdapter implements CardDAO {
                 .isActive(request.isActive())
                 .state(CardState.values()[request.state()])
                 .caseType(caseType)
+                .project(projectEntity)
                 .build();
         cardRepository.save(card);
 
@@ -124,4 +130,37 @@ public class CardDaoAdapter implements CardDAO {
     public void deleteCard(Long id) {
         cardRepository.deleteById(id);
     }
+
+    @Override
+    public List<Map<String, Object>> numberOfCardsReport() {
+        List<Object[]> reportData = cardRepository.numberOfCardsReport();
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+
+        for (Object[] row : reportData) {
+            Map<String, Object> projectInfo = new HashMap<>();
+            projectInfo.put("project", row[0]);
+            projectInfo.put("numberOfCases", row[1]);
+            formattedData.add(projectInfo);
+        }
+
+        return formattedData;
+    }
+
+    @Override
+    public List<Map<String, Object>> hoursAndMoneyByDateRange(String startDate, String endDate) {
+        List<Object[]> data = cardRepository.hoursAndMoneyByDateRange(startDate, endDate);
+
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+
+        for (Object[] row : data) {
+            Map<String, Object> rowData = new HashMap<>();
+            rowData.put("date", row[0]);
+            rowData.put("total_hours", row[1]);
+            rowData.put("total_money_invested", row[2]);
+            formattedData.add(rowData);
+        }
+        return formattedData;
+    }
+
+
 }

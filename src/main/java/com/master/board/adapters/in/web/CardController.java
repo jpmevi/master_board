@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -31,6 +33,15 @@ public class CardController {
         return new PaginatedResponse<>(HttpStatus.OK.value(),"OK", HttpStatus.OK,cardPage.getContent(),cardPage.getPageable());
     }
 
+    @GetMapping("/numberOfCards")
+    public ApiResponse<Object[]> getNumberOfCardsReport(){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,cardUseCase.getNumberOfCardsReport());
+    }
+
+    @GetMapping("/hoursAndMoneyByDateRange/{startDate}/{endDate}")
+    public ApiResponse<Object[]> hoursAndMoneyByDateRange(@PathVariable String startDate, @PathVariable String endDate){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,cardUseCase.hoursAndMoneyByDateRange(startDate,endDate));
+    }
     @GetMapping("/{cardId}")
     public ApiResponse<Card> getCardById(@PathVariable Long cardId){
         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,cardUseCase.getCardById(cardId));

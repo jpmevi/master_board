@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -52,6 +53,37 @@ public class UserUseCase {
         }
     }
 
+    public List<Map<String, Object>> mostPaidDeveloper(){
+        try{
+           return userDao.mostPaidDeveloper();
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public List<Map<String, Object>> developerWithMostAssignedCards(){
+        try{
+            return userDao.developerWithMostAssignedCards();
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public List<Map<String, Object>> developersReport(){
+        try{
+            return userDao.developersReport();
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
+    public List<Map<String, Object>> hoursAndMoneyByDeveloper(Long userId){
+        try{
+            return userDao.hoursAndMoneyByDeveloper(userId);
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
     public List<User> getUserByRoleAndName(String roleName, String userName) throws ResourceNotFoundException{
         try{
             if (!Role.contains(roleName)) {
