@@ -21,4 +21,9 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
             value = "SELECT * FROM user u WHERE u.role = :roleName AND u.first_name LIKE %:userName%",
             nativeQuery = true)
     List<UserEntity> getUserByRoleAndName(@Param("roleName") String roleName, @Param("userName") String userName);
+
+    @Query(
+            value = "SELECT * FROM user u WHERE u.role = :roleName",
+            nativeQuery = true)
+    List<UserEntity> getUsersByRole(@Param("roleName") String roleName);
 }

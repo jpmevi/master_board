@@ -40,6 +40,7 @@ public class UserDaoAdapter implements UserDAO {
                         userEntity.getAddress(),
                         userEntity.getPhone(),
                         userEntity.getImgUrl(),
+                        userEntity.getSalaryPerHour(),
                         userEntity.getRole(),
                         userEntity.getAuthorities()
                 )
@@ -59,6 +60,28 @@ public class UserDaoAdapter implements UserDAO {
                             userEntity.getAddress(),
                             userEntity.getPhone(),
                             userEntity.getImgUrl(),
+                            userEntity.getSalaryPerHour(),
+                            userEntity.getRole(),
+                            userEntity.getAuthorities()
+                    );
+                }).toList();
+
+    }
+
+    @Override
+    public List<User> getUsersByRole(String roleName) {
+        return  ((List<UserEntity>) userRepository.getUsersByRole(roleName))
+                .stream()
+                .map(userEntity -> {
+                    return new User(
+                            userEntity.getId(),
+                            userEntity.getFirstName(),
+                            userEntity.getLastName(),
+                            userEntity.getEmail(),
+                            userEntity.getAddress(),
+                            userEntity.getPhone(),
+                            userEntity.getImgUrl(),
+                            userEntity.getSalaryPerHour(),
                             userEntity.getRole(),
                             userEntity.getAuthorities()
                     );
@@ -79,6 +102,7 @@ public class UserDaoAdapter implements UserDAO {
                         userEntity.getAddress(),
                         userEntity.getPhone(),
                         userEntity.getImgUrl(),
+                        userEntity.getSalaryPerHour(),
                         userEntity.getRole(),
                         userEntity.getAuthorities()
                 ))
@@ -98,6 +122,7 @@ public class UserDaoAdapter implements UserDAO {
                 .address(request.address())
                 .phone(request.phone())
                 .imgUrl(request.img_url())
+                .salaryPerHour(request.salary_per_hour())
                 .role(Role.values()[request.role()])
                 .build();
         userRepository.save(user);
@@ -105,15 +130,16 @@ public class UserDaoAdapter implements UserDAO {
     }
 
     @Override
-    public void updateUser(UserEntity user, RegisterDto request) {
+    public void updateUser(UserEntity user, RegisterDto request, PasswordEncoder passwordEncoder) {
 
         user.setFirstName(request.first_name());
         user.setLastName(request.last_name());
         user.setEmail(request.email());
-        user.setPassword(request.password());
+        user.setPassword(passwordEncoder.encode( request.password()));
         user.setAddress(request.address());
         user.setPhone(request.phone());
         user.setImgUrl(request.img_url());
+        user.setSalaryPerHour(request.salary_per_hour());
         user.setRole(Role.values()[request.role()]);
 
         userRepository.save(user);
