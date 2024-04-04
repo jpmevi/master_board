@@ -37,10 +37,18 @@ public class CaseTypeController {
         return new PaginatedResponse<>(HttpStatus.OK.value(),"OK", HttpStatus.OK,caseTypePage.getContent(),caseTypePage.getPageable());
     }
 
-    @GetMapping("caseTypeByProject/{projectId}")
-    public ApiResponse<List<CaseType>> getAllCaseTypesByProject(@PathVariable Long projectId){
-        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,caseTypeUseCase.getAllCaseTypesByProject(projectId));
-    }
+    /**
+     * DISABLED TEMPORALLY
+     * @param projectId
+     * @return
+     */
+    /**
+     * @GetMapping("caseTypeByProject/{projectId}")
+     *     public ApiResponse<List<CaseType>> getAllCaseTypesByProject(@PathVariable Long projectId){
+     *         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,caseTypeUseCase.getAllCaseTypesByProject(projectId));
+     *     }
+     *
+     */
 
     @GetMapping("/{caseTypeId}")
     public ApiResponse<CaseType> getCaseTypeById(@PathVariable Long caseTypeId){
