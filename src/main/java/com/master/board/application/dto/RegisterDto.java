@@ -25,7 +25,7 @@ public record RegisterDto(
         String img_url,
         @NotNull
         @Min(0)
-        @Max(3)
+        @Max(2)
         Integer role,
         @NotNull
         @NotEmpty
