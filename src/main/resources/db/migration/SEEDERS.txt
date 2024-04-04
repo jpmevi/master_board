@@ -1,4 +1,4 @@
--- CASE TYPE DICTIONARY
+--- CASE TYPE DICTIONARY
 LOCK TABLES `case_type` WRITE;
 /*!40000 ALTER TABLE `case_type` DISABLE KEYS */;
 INSERT INTO `case_type` VALUES (1,'Bug','Defects or issues found during development or testing.','2024-04-04 15:05:57','2024-04-04 15:05:57','#FF6347'),(2,'Feature','New functionality or enhancements to existing features.','2024-04-04 15:25:53','2024-04-04 15:25:53','#20B2AA'),(3,'Improvement','Refinements or optimizations to existing code or processes.','2024-04-04 15:26:00','2024-04-04 15:26:00','#FFD700'),(4,'Task','Non-coding activities or tasks required for project completion.','2024-04-04 15:26:09','2024-04-04 15:26:09','#ADD8E6'),(5,'Refactoring','Restructuring or rewriting code to improve readability or maintainability.','2024-04-04 15:26:23','2024-04-04 15:26:23','#8A2BE2');
@@ -31,3 +31,76 @@ LOCK TABLES `project` WRITE;
 INSERT INTO `project` VALUES (1,7,'Sistema de Gestión de Clientes','Sistema para gestionar información de clientes y contactos','https://example.com/project1_background.jpg',1,0,'','2024-04-04 19:40:49','2024-04-04 19:40:49'),(2,7,'Plataforma de E-Commerce','Desarrollo de una plataforma de venta en línea','https://example.com/project2_background.jpg',1,0,'','2024-04-04 19:40:53','2024-04-04 19:40:53'),(3,8,'Sistema de Gestión de Tareas','Herramienta para organizar y asignar tareas a equipos de trabajo','https://example.com/project3_background.jpg',1,0,'','2024-04-04 19:40:57','2024-04-04 19:40:57'),(4,8,'Aplicación de Gestión de Inventarios','Desarrollo de una aplicación para controlar el inventario de productos','https://example.com/project4_background.jpg',1,0,'','2024-04-04 19:40:59','2024-04-04 19:40:59'),(5,9,'Plataforma de Gestión de Proyectos','Herramienta para la gestión eficiente de proyectos y tareas','https://example.com/project5_background.jpg',1,0,'','2024-04-04 19:41:01','2024-04-04 19:41:01'),(6,9,'Sistema de Reservas de Hoteles','Desarrollo de una plataforma para la reserva de habitaciones de hotel','https://example.com/project6_background.jpg',1,0,'','2024-04-04 19:41:03','2024-04-04 19:41:03'),(7,10,'Aplicación de Seguimiento de Actividades Físicas','Desarrollo de una aplicación para registrar actividades físicas y progreso','https://example.com/project7_background.jpg',1,0,'','2024-04-04 19:42:05','2024-04-04 19:42:05'),(8,10,'Plataforma Educativa Online','Desarrollo de una plataforma para la enseñanza y el aprendizaje en línea','https://example.com/project8_background.jpg',1,0,'','2024-04-04 19:42:12','2024-04-04 19:42:12'),(9,11,'Sistema de Reservas de Vuelos','Plataforma para la reserva de pasajes de avión y gestión de vuelos','https://example.com/project9_background.jpg',1,0,'','2024-04-04 19:43:35','2024-04-04 19:43:35'),(10,11,'Aplicación de Gestión Financiera','Herramienta para el control y seguimiento de finanzas personales','https://example.com/project10_background.jpg',1,0,'','2024-04-04 19:43:44','2024-04-04 19:43:44'),(11,11,'Plataforma de Tutoriales de Programación','Portal con tutoriales y recursos para aprender programación','https://example.com/project11_background.jpg',1,1,'','2024-04-04 19:43:51','2024-04-04 19:43:51'),(12,12,'Sistema de Gestión de Eventos','Plataforma para la organización y gestión de eventos y conferencias','https://example.com/project12_background.jpg',1,1,'','2024-04-04 19:43:58','2024-04-04 19:43:58'),(13,12,'Aplicación de Recetas de Cocina','Colección de recetas y herramientas para cocinar en casa','https://example.com/project13_background.jpg',1,1,'','2024-04-04 19:44:07','2024-04-04 19:44:07'),(14,12,'Plataforma de Intercambio de Idiomas','Red social para practicar idiomas y hacer intercambios culturales','https://example.com/project14_background.jpg',1,1,'','2024-04-04 19:44:13','2024-04-04 19:44:13'),(15,7,'SmartCRM','A smart CRM solution for managing customer relationships efficiently.','https://example.com/smartcrm_background.jpg',1,1,'','2024-04-04 19:44:44','2024-04-04 19:44:44'),(16,8,'EcoShop','An eco-friendly online marketplace for sustainable products.','https://example.com/ecoshop_background.jpg',1,1,'','2024-04-04 19:44:49','2024-04-04 19:44:49'),(17,9,'TaskMaster','A task management tool for organizing daily activities.','https://example.com/taskmaster_background.jpg',0,0,'Project postponed indefinitely due to resource constraints.','2024-04-04 20:06:12','2024-04-04 20:06:12'),(18,10,'HealthTrack','An app for tracking health and fitness goals.','https://example.com/healthtrack_background.jpg',0,0,'Project halted due to changes in strategic priorities.','2024-04-04 20:06:18','2024-04-04 20:06:18'),(19,11,'EventPlanner','An event planning application for organizing social gatherings.','https://example.com/eventplanner_background.jpg',0,0,'Insufficient funding to continue development.','2024-04-04 20:06:24','2024-04-04 20:06:24'),(20,12,'LearnHub','An online platform for interactive learning and courses.','https://example.com/learnhub_background.jpg',0,0,'Technical challenges encountered during development.','2024-04-04 20:06:31','2024-04-04 20:06:31'),(21,7,'TravelBuddy','A travel companion app for planning trips and exploring new destinations.','https://example.com/travelbuddy_background.jpg',0,0,'Lack of market demand based on preliminary research.','2024-04-04 20:06:43','2024-04-04 20:06:43'),(22,8,'FoodieFinds','An app for discovering and sharing food recommendations.','https://example.com/foodiefinds_background.jpg',0,0,'Team reorganization and reallocation of resources.','2024-04-04 20:07:05','2024-04-04 20:07:05');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
+
+-- DATA FOR TABLE 'CARD'
+INSERT INTO card (name, description, due_date, reminder_date, is_active, state, canceled_reason, case_type_id, project_id)
+SELECT
+    CONCAT('Card ', ct.name) AS name,
+    CONCAT('Description of Card ', ct.name) AS description,
+    CURRENT_TIMESTAMP AS due_date,
+    CURRENT_TIMESTAMP AS reminder_date,
+    FLOOR(RAND() * 2) AS is_active, -- Estado aleatorio
+    CASE FLOOR(RAND() * 3)
+        WHEN 0 THEN 'pending'
+        WHEN 1 THEN 'canceled'
+        ELSE 'completed'
+    END AS state, -- Estado aleatorio
+    CASE FLOOR(RAND() * 3)
+        WHEN 0 THEN 'Reason 1'
+        WHEN 1 THEN 'Reason 2'
+        ELSE 'Reason 3'
+    END AS canceled_reason, -- Razón de cancelación aleatoria
+    ct.id AS case_type_id,
+    p.id AS project_id
+FROM
+    case_type ct
+CROSS JOIN
+    project p;
+
+-- DATA FOR TABLE CARD_ITEM asociados a cada card y case type flow
+INSERT INTO card_item (hours, state, case_type_flow_id, card_id)
+SELECT
+    CONCAT(FLOOR(RAND() * 8), ':', FLOOR(RAND() * 60)) AS hours,
+    CASE FLOOR(RAND() * 6)
+        WHEN 0 THEN 'unassigned'
+        WHEN 1 THEN 'assigned'
+        WHEN 2 THEN 'in_progress'
+        WHEN 3 THEN 'review'
+        WHEN 4 THEN 'rejected'
+        ELSE 'completed'
+    END AS state, -- Estado aleatorio
+    ctf.id AS case_type_flow_id,
+    c.id AS card_id
+FROM
+    case_type_flow ctf
+JOIN
+    card c ON c.case_type_id = ctf.case_type_id;
+
+
+-- DATA FOR CARD USER
+INSERT INTO card_user (user_id, card_id, card_item_id)
+SELECT
+    user_id,
+    card_id,
+    card_item_id
+FROM
+    (
+        SELECT
+            u.id AS user_id,
+            c.id AS card_id,
+            ci.id AS card_item_id,
+            ROW_NUMBER() OVER (PARTITION BY c.id ORDER BY RAND()) AS rn -- Generar un número de fila aleatorio para cada card
+        FROM
+            user u
+        JOIN
+            card c
+        JOIN
+            card_item ci ON ci.card_id = c.id
+        WHERE
+            u.role = 3 -- Seleccionar solo developers (role = 3)
+            AND ci.state <> 'unassigned' -- Seleccionar solo card_items con estado diferente de 'unassigned'
+    ) AS sub
+WHERE
+    rn <= 3; -- Asignar solo 3 developers por cada card
+
+-- DATA FOR CARD ACTIVITY
