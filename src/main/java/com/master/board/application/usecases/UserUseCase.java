@@ -63,6 +63,17 @@ public class UserUseCase {
         }
     }
 
+    public List<User> getUsersByRole(String roleName) throws ResourceNotFoundException{
+        try{
+            if (!Role.contains(roleName)) {
+                throw new ResourceNotFoundException("Role","name",roleName);
+            }
+            return userDao.getUsersByRole(roleName);
+        }catch (Exception e){
+            throw new BadRequestException(e.getMessage());
+        }
+    }
+
     public User saveUser(RegisterDto request) {
         var isPresent = userDao.findUserByEmail(request.email()).isPresent();
         if(isPresent) throw new ResourceAlreadyExistsException("user","email",request.email());

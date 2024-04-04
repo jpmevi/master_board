@@ -67,6 +67,26 @@ public class UserDaoAdapter implements UserDAO {
     }
 
     @Override
+    public List<User> getUsersByRole(String roleName) {
+        return  ((List<UserEntity>) userRepository.getUsersByRole(roleName))
+                .stream()
+                .map(userEntity -> {
+                    return new User(
+                            userEntity.getId(),
+                            userEntity.getFirstName(),
+                            userEntity.getLastName(),
+                            userEntity.getEmail(),
+                            userEntity.getAddress(),
+                            userEntity.getPhone(),
+                            userEntity.getImgUrl(),
+                            userEntity.getRole(),
+                            userEntity.getAuthorities()
+                    );
+                }).toList();
+
+    }
+
+    @Override
     public Page<User> findAllUsers(Pageable pageable) {
         Page<UserEntity> userEntitiesPage = userRepository.findAll(pageable);
 

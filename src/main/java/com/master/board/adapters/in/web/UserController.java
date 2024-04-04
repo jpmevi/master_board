@@ -51,6 +51,10 @@ public class UserController {
         return new PaginatedResponse<>(HttpStatus.OK.value(),"OK", HttpStatus.OK,usersPage.getContent(),usersPage.getPageable());
     }
 
+    @GetMapping("/role/{roleName}")
+    public ApiResponse<List<User>> getUsersByRole(@PathVariable String roleName){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.getUsersByRole(roleName));
+    }
     @GetMapping("/{roleName}/{userName}")
     public ApiResponse<List<User>> getUserByRoleAndName(@PathVariable String roleName,@PathVariable String userName){
         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,userUseCase.getUserByRoleAndName(roleName,userName));
@@ -63,6 +67,8 @@ public class UserController {
     public ResponseEntity<?> getUserById(@PathVariable Long userId){
         return ResponseEntity.status(HttpStatus.OK).body(userUseCase.getUserById(userId));
     }
+
+    @PreAuthorize("hasAuthority('administrator')")
     @PostMapping()
     public ApiResponse<User> saveUser(@RequestBody @Valid RegisterDto request)
     {
@@ -74,6 +80,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userUseCase.updateUser(userId,registerDto));
     }
 
+    @PreAuthorize("hasAuthority('administrator')")
     @DeleteMapping("/{userId}")
     public ResponseEntity<?> deleteUser(@PathVariable Long userId){
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(userUseCase.deleteUser(userId));
