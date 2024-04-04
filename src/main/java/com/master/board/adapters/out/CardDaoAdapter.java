@@ -74,8 +74,8 @@ public class CardDaoAdapter implements CardDAO {
     }
 
     @Override
-    public List<Card> findAllCardsByCaseType(Long caseTypeId) {
-        return  ((List<CardEntity>) cardRepository.findAllByCaseType(caseTypeId))
+    public List<Card> findAllCardsByUser(Long userId) {
+        return  ((List<CardEntity>) cardRepository.findAllByUserId(userId))
                 .stream()
                 .map(cardEntity -> {
                     return new Card(

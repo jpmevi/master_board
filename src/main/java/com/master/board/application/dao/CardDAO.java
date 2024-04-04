@@ -15,7 +15,7 @@ public interface CardDAO {
     Optional<Card> find(Long id);
     Optional<CardEntity> findById(Long id);
     Page<Card> findAllCards(Pageable pageable);
-    List<Card> findAllCardsByCaseType(Long caseTypeId);
+    List<Card> findAllCardsByUser(Long userId);
     Card saveCard(CardDto input, CaseTypeEntity caseType);
     void updateCard(CardEntity card, CardDto input,CaseTypeEntity caseType);
     void deleteCard(Long id);

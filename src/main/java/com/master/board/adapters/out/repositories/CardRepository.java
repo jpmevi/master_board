@@ -14,8 +14,10 @@ import java.util.List;
 public interface CardRepository extends JpaRepository<CardEntity,Long> {
 
     @Query(
-            value = "SELECT * FROM card c WHERE c.case_type_id = :caseTypeId",
-            nativeQuery = true)
-    List<CardEntity> findAllByCaseType(@Param("caseTypeId") Long caseTypeId);
+            value = "SELECT c.* FROM card c JOIN card_user cu ON c.id = cu.card_id WHERE cu.user_id = :userId",
+            nativeQuery = true
+    )
+    List<CardEntity> findAllByUserId(@Param("userId") Long userId);
+
 
 }

@@ -31,6 +31,10 @@ public class CardController {
         return new PaginatedResponse<>(HttpStatus.OK.value(),"OK", HttpStatus.OK,cardPage.getContent(),cardPage.getPageable());
     }
 
+    @GetMapping("/cardsByUser/{userId}")
+    public ApiResponse<List<Card>> getCardByUser(@PathVariable Long userId){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,cardUseCase.getAllCardsByUser(userId));
+    }
     @GetMapping("/{cardId}")
     public ApiResponse<Card> getCardById(@PathVariable Long cardId){
         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,cardUseCase.getCardById(cardId));

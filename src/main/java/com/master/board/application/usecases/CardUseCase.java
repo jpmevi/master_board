@@ -23,6 +23,10 @@ public class CardUseCase {
         return cardDAO.findAllCards(pageable);
     }
 
+    public List<Card> getAllCardsByUser(Long userId){
+        return cardDAO.findAllCardsByUser(userId);
+    }
+
     public Optional<Card> getCardById(Long id){
         try{
             var card = cardDAO.find(id);
