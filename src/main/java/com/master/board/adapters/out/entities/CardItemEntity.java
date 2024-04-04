@@ -1,5 +1,6 @@
 package com.master.board.adapters.out.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.master.board.domain.models.enums.CardItemState;
 import com.master.board.domain.models.enums.CardState;
 import jakarta.persistence.*;
@@ -27,9 +28,11 @@ public class CardItemEntity {
         String hours;
         @Enumerated(EnumType.STRING)
         CardItemState state;
+        @JsonIgnoreProperties("caseType")
         @ManyToOne
         @JoinColumn(name = "case_type_flow_id")
         CaseTypeFlowEntity caseTypeFlow;
+        @JsonIgnoreProperties("caseType")
         @ManyToOne
         @JoinColumn(name = "card_id")
         CardEntity card;

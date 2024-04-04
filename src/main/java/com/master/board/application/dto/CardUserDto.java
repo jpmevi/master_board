@@ -11,7 +11,6 @@ public record CardUserDto(
         @NotNull
         @Min(1)
         Long cardId,
-        @Min(1)
         Long cardItemId
 ) {
 }
