@@ -21,4 +21,6 @@ public interface CaseTypeRepository extends JpaRepository<CaseTypeEntity,Long> {
             value = "SELECT * FROM case_type c WHERE c.project_id = :projectId",
             nativeQuery = true)
     List<CaseTypeEntity> findAllByProject(@Param("projectId") Long projectId);
+
+
 }

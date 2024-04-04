@@ -17,8 +17,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
@@ -122,5 +121,50 @@ public class ProjectDaoAdapter implements ProjectDAO {
         projectRepository.deleteById(id);
     }
 
+    @Override
+    public List<Map<String, Object>> hoursAndMoneySpecificProject(Long projectId){
+        List<Object[]> data = projectRepository.hoursAndMoneySpecificProject(projectId);
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+
+        for (Object[] row : data) {
+            Map<String, Object> projectData = new HashMap<>();
+            projectData.put("proyecto", row[0]);
+            projectData.put("horas", row[1]);
+            projectData.put("dinero", row[2]);
+            formattedData.add(projectData);
+        }
+        return formattedData;
+    }
+    @Override
+    public List<Map<String, Object>> hoursAndMoneyPerProject(){
+        List<Object[]> data = projectRepository.hoursAndMoneyPerProject();
+
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+
+        for (Object[] row : data) {
+            Map<String, Object> projectData = new HashMap<>();
+            projectData.put("proyecto", row[0]);
+            projectData.put("horas", row[1]);
+            projectData.put("dinero", row[2]);
+            formattedData.add(projectData);
+        }
+        return formattedData;
+    }
+
+    @Override
+    public List<Map<String, Object>> projectWithMoreCanceledCases(){
+        List<Object[]> data = projectRepository.projectWithMoreCanceledCases();
+
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+
+        for (Object[] row : data) {
+            Map<String, Object> projectData = new HashMap<>();
+            projectData.put("project_id", row[0]);
+            projectData.put("numberCanceledCases", row[1]);
+            projectData.put("projectName", row[2]);
+            formattedData.add(projectData);
+        }
+        return formattedData;
+    }
 
 }

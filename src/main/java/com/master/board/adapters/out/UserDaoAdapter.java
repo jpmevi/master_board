@@ -16,8 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @RequiredArgsConstructor
 @Component
@@ -149,4 +148,86 @@ public class UserDaoAdapter implements UserDAO {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+    public List<Map<String, Object>> mostPaidDeveloper(){ List<Map<String, Object>> rawData = userRepository.mostPaidDeveloper();
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+        for (Map<String, Object> row : rawData) {
+            Map<String, Object> developerInfo = new HashMap<>();
+            developerInfo.put("userId", row.get("id"));
+            developerInfo.put("firstName", row.get("first_name"));
+            developerInfo.put("lastName", row.get("last_name"));
+            developerInfo.put("email",row.get("email"));
+            developerInfo.put("address",row.get("address"));
+            developerInfo.put("phone",row.get("phone"));
+            developerInfo.put("imgUrl",row.get("img_url"));
+            developerInfo.put("role",row.get("role"));
+            developerInfo.put("salaryPerHour",row.get("salary_per_hour"));
+            developerInfo.put("totalPayment", row.get("total_payment"));
+            formattedData.add(developerInfo);
+        }
+        return formattedData;
+    }
+
+    public List<Map<String, Object>> developerWithMostAssignedCards(){ List<Map<String, Object>> rawData = userRepository.developerWithMostAssignedCards();
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+        for (Map<String, Object> row : rawData) {
+            Map<String, Object> developerInfo = new HashMap<>();
+            developerInfo.put("userId", row.get("id"));
+            developerInfo.put("firstName", row.get("first_name"));
+            developerInfo.put("lastName", row.get("last_name"));
+            developerInfo.put("email",row.get("email"));
+            developerInfo.put("address",row.get("address"));
+            developerInfo.put("phone",row.get("phone"));
+            developerInfo.put("imgUrl",row.get("img_url"));
+            developerInfo.put("role",row.get("role"));
+            developerInfo.put("salaryPerHour",row.get("salary_per_hour"));
+            developerInfo.put("numberAssignedCards", row.get("num_assigned_cards"));
+            formattedData.add(developerInfo);
+        }
+        return formattedData;}
+
+    @Override
+    public List<Map<String, Object>> developersReport() {
+        List<Map<String, Object>> rawData = userRepository.developersReport();
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+        for (Map<String, Object> row : rawData) {
+            Map<String, Object> developerInfo = new HashMap<>();
+            developerInfo.put("userId", row.get("id"));
+            developerInfo.put("firstName", row.get("first_name"));
+            developerInfo.put("lastName", row.get("last_name"));
+            developerInfo.put("email",row.get("email"));
+            developerInfo.put("address",row.get("address"));
+            developerInfo.put("phone",row.get("phone"));
+            developerInfo.put("imgUrl",row.get("img_url"));
+            developerInfo.put("role",row.get("role"));
+            developerInfo.put("salaryPerHour",row.get("salary_per_hour"));
+            developerInfo.put("totalEarned", row.get("total_earned"));
+            developerInfo.put("numCompletedCards", row.get("num_completed_cards"));
+            formattedData.add(developerInfo);
+        }
+        return formattedData;
+    }
+
+    @Override
+    public List<Map<String, Object>> hoursAndMoneyByDeveloper(Long userId) {
+        List<Map<String, Object>> rawData = userRepository.hoursAndMoneyByDeveloper(userId);
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+        for (Map<String, Object> row : rawData) {
+            Map<String, Object> developerInfo = new HashMap<>();
+            developerInfo.put("userId", row.get("id"));
+            developerInfo.put("firstName", row.get("first_name"));
+            developerInfo.put("lastName", row.get("last_name"));
+            developerInfo.put("email",row.get("email"));
+            developerInfo.put("address",row.get("address"));
+            developerInfo.put("phone",row.get("phone"));
+            developerInfo.put("imgUrl",row.get("img_url"));
+            developerInfo.put("role",row.get("role"));
+            developerInfo.put("salaryPerHour",row.get("salary_per_hour"));
+            developerInfo.put("totalHoursInvested",row.get("total_hours"));
+            developerInfo.put("totalMoneyInvested", row.get("total_money_invested"));
+            formattedData.add(developerInfo);
+        }
+        return formattedData;
+    }
+
 }

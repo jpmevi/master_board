@@ -17,19 +17,19 @@ public record CardDto(
         @NotEmpty
         String description,
         @NotNull()
-        @NotEmpty
         Date dueDate,
         @NotNull()
-        @NotEmpty
         Date reminderDate,
         @NotNull()
-        @NotEmpty
         Boolean isActive,
         @NotNull
         @Min(1)
         Integer state,
         @NotNull
         @Min(1)
-        Long caseTypeId
+        Long caseTypeId,
+        @NotNull
+        @Min(1)
+        Long projectId
 ) {
 }
