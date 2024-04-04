@@ -23,6 +23,7 @@ import java.util.List;
 @RequestMapping("api/v1/comment")
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@CrossOrigin("http://localhost:4200")
 public class CommentController {
     private final CommentUseCase commentUseCase;
 

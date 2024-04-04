@@ -27,6 +27,7 @@ import java.util.Map;
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@CrossOrigin("http://localhost:4200")
 public class UserController {
     private final UserUseCase userUseCase;
 

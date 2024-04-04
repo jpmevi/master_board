@@ -20,6 +20,7 @@ import java.util.List;
 @RequestMapping("api/v1/caseTypeFlow")
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@CrossOrigin("http://localhost:4200")
 public class CaseTypeFlowController {
     private final CaseTypeFlowUseCase caseTypeFlowUseCase;
 

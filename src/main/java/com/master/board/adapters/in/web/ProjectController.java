@@ -32,6 +32,7 @@ import java.util.Optional;
 @RequestMapping("api/v1/project")
 @RequiredArgsConstructor
 @EnableMethodSecurity
+@CrossOrigin("http://localhost:4200")
 public class ProjectController {
 
     private final ProjectUseCase projectUseCase;
