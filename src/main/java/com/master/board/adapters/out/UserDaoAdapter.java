@@ -40,6 +40,7 @@ public class UserDaoAdapter implements UserDAO {
                         userEntity.getAddress(),
                         userEntity.getPhone(),
                         userEntity.getImgUrl(),
+                        userEntity.getSalaryPerHour(),
                         userEntity.getRole(),
                         userEntity.getAuthorities()
                 )
@@ -59,6 +60,7 @@ public class UserDaoAdapter implements UserDAO {
                             userEntity.getAddress(),
                             userEntity.getPhone(),
                             userEntity.getImgUrl(),
+                            userEntity.getSalaryPerHour(),
                             userEntity.getRole(),
                             userEntity.getAuthorities()
                     );
@@ -79,6 +81,7 @@ public class UserDaoAdapter implements UserDAO {
                             userEntity.getAddress(),
                             userEntity.getPhone(),
                             userEntity.getImgUrl(),
+                            userEntity.getSalaryPerHour(),
                             userEntity.getRole(),
                             userEntity.getAuthorities()
                     );
@@ -99,6 +102,7 @@ public class UserDaoAdapter implements UserDAO {
                         userEntity.getAddress(),
                         userEntity.getPhone(),
                         userEntity.getImgUrl(),
+                        userEntity.getSalaryPerHour(),
                         userEntity.getRole(),
                         userEntity.getAuthorities()
                 ))
@@ -118,6 +122,7 @@ public class UserDaoAdapter implements UserDAO {
                 .address(request.address())
                 .phone(request.phone())
                 .imgUrl(request.img_url())
+                .salaryPerHour(request.salary_per_hour())
                 .role(Role.values()[request.role()])
                 .build();
         userRepository.save(user);
@@ -134,6 +139,7 @@ public class UserDaoAdapter implements UserDAO {
         user.setAddress(request.address());
         user.setPhone(request.phone());
         user.setImgUrl(request.img_url());
+        user.setSalaryPerHour(request.salary_per_hour());
         user.setRole(Role.values()[request.role()]);
 
         userRepository.save(user);

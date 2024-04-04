@@ -23,6 +23,7 @@ public record RegisterDto(
         @NotNull
         @NotEmpty
         String img_url,
+        Double salary_per_hour,
         @NotNull
         @Min(0)
         @Max(2)

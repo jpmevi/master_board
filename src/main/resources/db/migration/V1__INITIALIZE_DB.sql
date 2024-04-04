@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS masterboard.project (
                                                    name VARCHAR(45) NOT NULL,
     description TEXT,
     background_url TEXT,
-    is_active VARCHAR(45) NOT NULL,
+    is_active TINYINT NOT NULL,
     is_public TINYINT NOT NULL,
     disabled_reason TEXT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

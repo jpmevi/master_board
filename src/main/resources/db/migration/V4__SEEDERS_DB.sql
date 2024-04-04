@@ -1,0 +1,2 @@
+INSERT INTO user (first_name, last_name, address, phone, email, img_url, role, password, salary_per_hour)
+VALUES ('ADMIN', 'MASTER', '123 Admin St', '123456789', 'admin@gmail.com', 'admin.jpg', 'administrator', '$2a$10$ai.8/4uTpppm.YvDURtHhexHo4RAC5WpqZsbe.jy1JfT4Vy2XC/1a', NULL);

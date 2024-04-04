@@ -18,6 +18,7 @@ public record User(
         String address,
         String phone,
         String imgUrl,
+        Double salaryPerHour,
         Role role,
         Collection authorities
 
@@ -31,6 +32,7 @@ public record User(
                 userEntity.getAddress(),
                 userEntity.getPhone(),
                 userEntity.getImgUrl(),
+                userEntity.getSalaryPerHour(),
                 userEntity.getRole(),
                 userEntity.getAuthorities()
         );
@@ -70,6 +72,10 @@ public record User(
         return imgUrl;
     }
 
+    @Override
+    public Double salaryPerHour() {
+        return salaryPerHour;
+    }
     @Override
     public Role role() {
         return role;

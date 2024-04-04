@@ -31,6 +31,7 @@ public class UserEntity implements UserDetails {
         String address;
         String phone;
         String imgUrl;
+        Double salaryPerHour;
         @Enumerated(EnumType.STRING)
         Role role;
         @Version
