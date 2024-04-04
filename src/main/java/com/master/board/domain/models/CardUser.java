@@ -17,7 +17,7 @@ public record CardUser(
                         cardUserEntity.getId(),
                         new User(cardUserEntity.getUser()),
                         new Card(cardUserEntity.getCard()),
-                        new CardItem(cardUserEntity.getCardItem())
+                        cardUserEntity.getCardItem() !=null ? new CardItem(cardUserEntity.getCardItem()) : null
                 );
         }
 

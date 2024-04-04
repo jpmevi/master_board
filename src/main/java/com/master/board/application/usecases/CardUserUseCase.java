@@ -39,10 +39,10 @@ public class CardUserUseCase {
     public CardUser saveCardUser(CardUserDto request) {
         var existingCard = cardDAO.findById(request.cardId());
         var existingUser = userDAO.find(request.userId());
-        var existingCardItem = cardItemDAO.findById(request.cardItemId());
         if(!existingCard.isPresent()) throw new ResourceNotFoundException("card","id",request.cardId());
         if(!existingUser.isPresent()) throw new ResourceNotFoundException("user","id",request.userId());
         if (request.cardItemId() != null) {
+            var existingCardItem = cardItemDAO.findById(request.cardItemId());
             if(!existingCardItem.isPresent()) throw new ResourceNotFoundException("cardItem","id",request.cardItemId());
             return cardUserDAO.saveCardUser(request,existingUser.get(),existingCard.get(),existingCardItem.get());
         }
