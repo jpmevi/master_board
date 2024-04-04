@@ -19,6 +19,6 @@ public interface UserDAO {
     List<User> getUserByRoleAndName(String roleName, String userName);
     Page<User> findAllUsers(Pageable pageable);
     User saveUser(RegisterDto user,PasswordEncoder passwordEncoder);
-    void updateUser(UserEntity user,RegisterDto input);
+    void updateUser(UserEntity user,RegisterDto input, PasswordEncoder passwordEncoder);
     void deleteUser(Long id);
 }

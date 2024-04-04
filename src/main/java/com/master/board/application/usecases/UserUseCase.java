@@ -77,7 +77,7 @@ public class UserUseCase {
             var isPresentEmail = userDao.findUserByEmail(updateUserDto.email()).isPresent();
             if (isPresentEmail) throw new ResourceAlreadyExistsException("user", "email", updateUserDto.email());
         }
-        userDao.updateUser(existingUser.get(),updateUserDto);
+        userDao.updateUser(existingUser.get(),updateUserDto, passwordEncoder);
             return new ResponseEntity<>(existingUser, HttpStatus.OK);
         }catch (Exception e){
             throw new BadRequestException(e.getMessage());

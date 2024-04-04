@@ -105,12 +105,12 @@ public class UserDaoAdapter implements UserDAO {
     }
 
     @Override
-    public void updateUser(UserEntity user, RegisterDto request) {
+    public void updateUser(UserEntity user, RegisterDto request, PasswordEncoder passwordEncoder) {
 
         user.setFirstName(request.first_name());
         user.setLastName(request.last_name());
         user.setEmail(request.email());
-        user.setPassword(request.password());
+        user.setPassword(passwordEncoder.encode( request.password()));
         user.setAddress(request.address());
         user.setPhone(request.phone());
         user.setImgUrl(request.img_url());
