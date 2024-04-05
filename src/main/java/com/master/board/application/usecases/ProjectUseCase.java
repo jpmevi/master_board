@@ -91,4 +91,14 @@ public class ProjectUseCase {
         return projectDAO.projectWithMoreCanceledCases();
     }
 
+    public List<Map<String, Object>> projectWithMostReportedFinishedCards()
+    {
+        return projectDAO.projectWithMostReportedFinishedCards();
+    }
+
+    public List<Map<String, Object>> hoursAndMoneyPerCaseType(String caseType)
+    {
+        return projectDAO.hoursAndMoneyPerCaseType(caseType);
+    }
+
 }

@@ -27,6 +27,14 @@ public class CardUseCase {
         return cardDAO.findAllCards(pageable);
     }
 
+    public List<Card> getAllCardsByCaseType(Long caseTypeId){
+        return cardDAO.findAllCardsByCaseType(caseTypeId);
+    }
+
+    public List<Card> getAllCardsByProject(Long projectId){
+        return cardDAO.findAllCardsByProject(projectId);
+    }
+
     public Optional<Card> getCardById(Long id){
         try{
             var card = cardDAO.find(id);

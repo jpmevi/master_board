@@ -19,6 +19,7 @@ public interface CardDAO {
     Optional<CardEntity> findById(Long id);
     Page<Card> findAllCards(Pageable pageable);
     List<Card> findAllCardsByCaseType(Long caseTypeId);
+    List<Card> findAllCardsByProject(Long projectId);
 
     Card saveCard(CardDto input, CaseTypeEntity caseType,ProjectEntity projectEntity);
     void updateCard(CardEntity card, CardDto input,CaseTypeEntity caseType);

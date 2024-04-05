@@ -29,4 +29,7 @@ public interface ProjectDAO {
     List<Map<String, Object>> hoursAndMoneySpecificProject(Long projectId);
     List<Map<String, Object>> hoursAndMoneyPerProject();
     List<Map<String, Object>> projectWithMoreCanceledCases();
+    List<Map<String, Object>> projectWithMostReportedFinishedCards();
+
+    List<Map<String, Object>> hoursAndMoneyPerCaseType(String caseTypeName);
 }

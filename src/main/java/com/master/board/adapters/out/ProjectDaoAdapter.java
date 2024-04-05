@@ -166,5 +166,36 @@ public class ProjectDaoAdapter implements ProjectDAO {
         }
         return formattedData;
     }
+    @Override
+    public List<Map<String, Object>> projectWithMostReportedFinishedCards(){
+        List<Object[]> data = projectRepository.projectWithMostReportedCards();
+
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+
+        for (Object[] row : data) {
+            Map<String, Object> projectData = new HashMap<>();
+            projectData.put("projectName", row[0]);
+            projectData.put("numPendingCards", row[1]);
+            projectData.put("numCompletedCards", row[2]);
+            formattedData.add(projectData);
+        }
+        return formattedData;
+    }
+
+    @Override
+    public List<Map<String, Object>> hoursAndMoneyPerCaseType(String caseType){
+        List<Object[]> data = projectRepository.hoursAndMoneyPerCaseType(caseType);
+
+        List<Map<String, Object>> formattedData = new ArrayList<>();
+
+        for (Object[] row : data) {
+            Map<String, Object> projectData = new HashMap<>();
+            projectData.put("case_type_name", row[0]);
+            projectData.put("total_hours", row[1]);
+            projectData.put("total_money_invested", row[2]);
+            formattedData.add(projectData);
+        }
+        return formattedData;
+    }
 
 }
