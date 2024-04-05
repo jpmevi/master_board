@@ -48,6 +48,16 @@ public class CardController {
         return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,cardUseCase.getCardById(cardId));
     }
 
+    @GetMapping("/byCaseType/{caseTypeId}")
+    public ApiResponse<List<Card>> getCardsByCaseType(@PathVariable Long caseTypeId){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,cardUseCase.getAllCardsByCaseType(caseTypeId));
+    }
+
+    @GetMapping("/byProject/{projectId}")
+    public ApiResponse<List<Card>> getCardsByProject(@PathVariable Long projectId){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,cardUseCase.getAllCardsByProject(projectId));
+    }
+
     @PostMapping
     public ApiResponse<Card> saveCard(@RequestBody @Valid CardDto request)
     {

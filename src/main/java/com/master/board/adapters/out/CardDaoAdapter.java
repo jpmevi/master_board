@@ -97,6 +97,27 @@ public class CardDaoAdapter implements CardDAO {
                     );
                 }).toList();
     }
+
+    @Override
+    public List<Card> findAllCardsByProject(Long projectId) {
+        return  ((List<CardEntity>) cardRepository.findAllByProject(projectId))
+                .stream()
+                .map(cardEntity -> {
+                    return new Card(
+                            cardEntity.getId(),
+                            cardEntity.getName(),
+                            cardEntity.getDescription(),
+                            cardEntity.getDueDate(),
+                            cardEntity.getReminderDate(),
+                            cardEntity.getIsActive(),
+                            cardEntity.getState(),
+                            new CaseType(cardEntity.getCaseType()),
+                            new Project(cardEntity.getProject()),
+                            cardEntity.getCreatedAt(),
+                            cardEntity.getUpdatedAt()
+                    );
+                }).toList();
+    }
     @Override
     public Card saveCard(CardDto request, CaseTypeEntity caseType, ProjectEntity projectEntity) {
         CardEntity card = CardEntity.builder()

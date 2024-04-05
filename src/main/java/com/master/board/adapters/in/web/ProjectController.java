@@ -119,6 +119,18 @@ public class ProjectController {
     }
 
     @PreAuthorize("hasAuthority('administrator')")
+    @GetMapping("hoursAndMoneyPerCaseType/{caseType}")
+    public ApiResponse<List<Project>> hoursAndMoneyPerCaseType(@PathVariable String caseType){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,projectUseCase.hoursAndMoneyPerCaseType(caseType));
+    }
+
+    @PreAuthorize("hasAuthority('administrator')")
+    @GetMapping("projectWithMostReportedCards")
+    public ApiResponse<List<Project>> projectWithMostReportedFinishedCards(){
+        return new ApiResponse(HttpStatus.OK.value(),"Success", HttpStatus.OK,projectUseCase.projectWithMostReportedFinishedCards());
+    }
+
+    @PreAuthorize("hasAuthority('administrator')")
     @Operation(
             responses = {
                     @io.swagger.v3.oas.annotations.responses.ApiResponse(

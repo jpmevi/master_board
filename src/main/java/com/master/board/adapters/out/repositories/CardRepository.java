@@ -20,6 +20,11 @@ public interface CardRepository extends JpaRepository<CardEntity,Long> {
     List<CardEntity> findAllByCaseType(@Param("caseTypeId") Long caseTypeId);
 
     @Query(
+            value = "SELECT * FROM card c WHERE c.project_id = :projectId",
+            nativeQuery = true)
+    List<CardEntity> findAllByProject(@Param("projectId") Long projectId);
+
+    @Query(
             value = "SELECT p.name AS project_name, COUNT(c.id) AS num_cards " +
                     "FROM masterboard.project p " +
                     "LEFT JOIN masterboard.card c ON p.id = c.project_id " +

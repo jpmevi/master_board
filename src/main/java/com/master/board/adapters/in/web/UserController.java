@@ -23,11 +23,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
 @RequestMapping("api/v1/users")
 @RequiredArgsConstructor
 @EnableMethodSecurity
-@CrossOrigin("http://localhost:4200")
 public class UserController {
     private final UserUseCase userUseCase;
 
